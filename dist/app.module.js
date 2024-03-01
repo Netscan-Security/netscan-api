@@ -10,17 +10,49 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const logs_controller_1 = require("./controllers/logs/logs.controller");
-const logs_service_1 = require("./services/logs/logs.service");
-const test_controller_1 = require("./controllers/test/test.controller");
+const core_1 = require("@nestjs/core");
+const filters_1 = require("./core/filters");
+const users_module_1 = require("./modules/users/users.module");
+const config_1 = require("@nestjs/config");
+const drizzle_module_1 = require("./modules/drizzle/drizzle.module");
+const schema = require("./modules/drizzle/schema");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [],
-        controllers: [app_controller_1.AppController, logs_controller_1.LogsController, test_controller_1.TestController],
-        providers: [app_service_1.AppService, logs_service_1.LogsService],
+        imports: [
+            users_module_1.UsersModule,
+            config_1.ConfigModule.forRoot({ isGlobal: true }),
+            drizzle_module_1.NestDrizzleModule.forRootAsync({
+                useFactory: () => {
+                    return {
+                        driver: 'postgres-js',
+                        url: process.env.DATABASE_URL,
+                        options: { schema },
+                        migrationOptions: { migrationsFolder: './migration' },
+                    };
+                },
+            }),
+        ],
+        controllers: [app_controller_1.AppController],
+        providers: [
+            app_service_1.AppService,
+            { provide: core_1.APP_FILTER, useClass: filters_1.AllExceptionsFilter },
+            { provide: core_1.APP_FILTER, useClass: filters_1.ValidationExceptionFilter },
+            { provide: core_1.APP_FILTER, useClass: filters_1.BadRequestExceptionFilter },
+            { provide: core_1.APP_FILTER, useClass: filters_1.UnauthorizedExceptionFilter },
+            { provide: core_1.APP_FILTER, useClass: filters_1.ForbiddenExceptionFilter },
+            { provide: core_1.APP_FILTER, useClass: filters_1.NotFoundExceptionFilter },
+            {
+                provide: core_1.APP_PIPE,
+                useFactory: () => new common_1.ValidationPipe({
+                    exceptionFactory: (errors) => {
+                        return errors[0];
+                    },
+                }),
+            },
+        ],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

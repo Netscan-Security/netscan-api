@@ -1,6 +1,9 @@
 import { AppService } from './app.service';
+export declare class IName {
+    name: string;
+}
 export declare class AppController {
     private readonly appService;
     constructor(appService: AppService);
-    getHello(): string;
+    getHello(query: IName): string;
 }
