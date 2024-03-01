@@ -23,6 +23,12 @@ This repository contains a boilerplate setup for a Nest.js project integrated wi
 5. To run migration `pnpm run migrate`.
 6. Start the development server: `pnpm run start:dev`
 
+Extra
+
+- To generate migration `pnpm run generate`.
+- To run migration `pnpm run migrate`.
+- To open the Drizzle Studio `pnpm run studio`.
+
 ## Contribution Guidelines
 
 Contributions are welcome! If you find any issues or have suggestions for improvements, feel free to open an issue or submit a pull request.
