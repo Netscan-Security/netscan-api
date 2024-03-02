@@ -5,13 +5,10 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 Logger.log(`dotenv.config   ${JSON.stringify(dotenv.config())}`, 'Environment');
 
-const envFound =
-  process.env.NODE_ENV === 'production'
-    ? // ignore .env file in production, this is due to coolify deployment process
-      { error: null }
-    : dotenv.config();
-if (envFound.error) {
+if (!process.env.PORT) {
   // This error should crash whole process
+  // before we used to check with dotenv.config() to see if it was successful
+  // but now we are using process.env.PORT due to errors when deploying with docker
 
   throw new Error("⚠️  Couldn't find .env file  ⚠️");
 }
