@@ -2,24 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { Assistant } from 'src/interfaces/assistant/assistant.interface';
 import { AssistantFile } from 'src/interfaces/assistant-file/assistant-file.interface';
 import OpenAI from 'openai';
-import * as dotenv from 'dotenv';
-dotenv.config();
+import config from 'src/config';
 
-const openai = new OpenAI({ apiKey: process.env.OPEN_AI_API_KEY });
+const openai = new OpenAI({ apiKey: config.openai.apiKey });
 const welcom_msg = `
-write a welcome message to a phone call, our company is called Neural Motion africa.
-press one for General enquiry,
-press two for talking with specific job by entering job ID,
-press three to conduct and interview.
-
-Dont put any boilerplate in the response, just go straght and do not put bulleting numbering. keep the response as minimal as possible.
+write a welcome message 
 `;
 
 const assistant_instructions = `
-You re an assisntant made from GPT4 Model by OpenAI but now you are working for
-Neural Motion Africa and your Name is NeuralMotion AI, your only job is to read and to extract knowledge
-from the provided documents.
-You are to answer questions and provide information to the best of your ability.
+You re an assistant made from GPT4 Model by OpenAI but now you are working for
 `;
 
 @Injectable()
@@ -36,7 +27,7 @@ export class OpenaiService {
   async welcome(): Promise<string> {
     const completion = await openai.chat.completions.create({
       messages: [{ role: 'system', content: welcom_msg }],
-      model: process.env.CAHT_MODEL,
+      model: config.openai.chatModel,
     });
 
     return completion.choices[0].message.content;
@@ -47,7 +38,7 @@ export class OpenaiService {
       name: assisntant_name,
       instructions: assistant_instructions,
       tools: [{ type: 'retrieval' }],
-      model: process.env.ASSISTANT_MODEL,
+      model: config.openai.assistantModel,
     });
 
     return {

@@ -14,6 +14,7 @@ import { UsersModule } from './modules/users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { NestDrizzleModule } from './modules/drizzle/drizzle.module';
 import * as schema from './modules/drizzle/schema';
+import config from 'src/config';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import * as schema from './modules/drizzle/schema';
       useFactory: () => {
         return {
           driver: 'postgres-js',
-          url: process.env.DATABASE_URL,
+          url: config.databaseURL,
           options: { schema },
           migrationOptions: { migrationsFolder: './migration' },
         };

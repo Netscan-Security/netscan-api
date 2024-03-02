@@ -1,20 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
+import config from 'src/config';
 
-const PORT = process.env.PORT || 3000;
+const PORT = config.port || 3000;
 
-// Check for required environment variables
-if (!('DATABASE_URL' in process.env)) {
-  throw new Error(
-    ' ⚠️  DATABASE_URL environment variable is required for the application to run properly. Please check your environment variables. ⚠️ ',
-  );
-} else {
-  Logger.log(`DATABASE_URL found in environment variables. ✅`);
-}
-
-async function bootstrap() {
+async function startServer() {
   const app = await NestFactory.create(AppModule);
   await app.listen(PORT);
+  Logger.log(`Server running on 👉 http://localhost:${PORT}`, 'Main');
+  Logger.log('All Systems Go! 🚀', 'Main');
 }
-bootstrap();
+startServer();

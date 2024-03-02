@@ -17,6 +17,7 @@ import { PhoneService } from './services/phone/phone.service';
 import { PhoneController } from './controllers/phone/phone.controller';
 import { OpenaiService } from './services/openai/openai.service';
 import * as schema from './modules/drizzle/schema';
+import config from 'src/config';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import * as schema from './modules/drizzle/schema';
       useFactory: () => {
         return {
           driver: 'postgres-js',
-          url: process.env.DATABASE_URL,
+          url: config.databaseURL,
           options: { schema },
           migrationOptions: { migrationsFolder: './migration' },
         };
