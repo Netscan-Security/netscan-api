@@ -3,8 +3,6 @@ import * as dotenv from 'dotenv';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-Logger.log(`dotenv.config   ${JSON.stringify(dotenv.config())}`, 'Environment');
-
 if (!process.env.PORT) {
   // This error should crash whole process
   // before we used to check with dotenv.config() to see if it was successful
