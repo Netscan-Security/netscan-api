@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-Logger.log(`dotenv.config   ${dotenv.config()}`, 'Environment');
+Logger.log(`dotenv.config   ${JSON.stringify(dotenv.config())}`, 'Environment');
 
 const envFound =
   process.env.NODE_ENV === 'production'
