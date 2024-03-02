@@ -4,12 +4,12 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-const envFound = dotenv.config();
-if (envFound.error) {
-  // This error should crash whole process
+// const envFound = dotenv.config();
+// if (envFound.error) {
+//   // This error should crash whole process
 
-  throw new Error("⚠️  Couldn't find .env file  ⚠️");
-}
+//   throw new Error("⚠️  Couldn't find .env file  ⚠️");
+// }
 Logger.log(`✌️ environment variables loaded! ✅`, 'Environment');
 
 const requiredEnvVars = ['DATABASE_URL', 'OPEN_AI_API_KEY'];
