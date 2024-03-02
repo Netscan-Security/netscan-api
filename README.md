@@ -23,7 +23,7 @@ This repository contains a boilerplate setup for a Nest.js project integrated wi
 5. To run migration `pnpm run migrate`.
 6. Start the development server: `pnpm run start:dev`
 
-Extra
+Database
 
 - To generate migration `pnpm run generate`.
 - To run migration `pnpm run migrate`.
