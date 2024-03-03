@@ -8,7 +8,10 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 
 // Import internal modules
 import { ExceptionConstants } from './exceptions.constants';
-import { IException, IHttpForbiddenExceptionResponse } from './exceptions.interface';
+import {
+  IException,
+  IHttpForbiddenExceptionResponse,
+} from './exceptions.interface';
 
 /**
  * A custom exception for forbidden errors.
@@ -88,7 +91,9 @@ export class ForbiddenException extends HttpException {
    * @param message A string representing the message to include in the response body.
    * @returns An object representing the HTTP response body.
    */
-  generateHttpResponseBody = (message?: string): IHttpForbiddenExceptionResponse => {
+  generateHttpResponseBody = (
+    message?: string,
+  ): IHttpForbiddenExceptionResponse => {
     return {
       _meta: {
         code: this.code,

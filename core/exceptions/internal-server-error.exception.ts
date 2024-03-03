@@ -3,7 +3,10 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 
 // Import internal files & modules
 import { ExceptionConstants } from './exceptions.constants';
-import { IException, IHttpInternalServerErrorExceptionResponse } from './exceptions.interface';
+import {
+  IException,
+  IHttpInternalServerErrorExceptionResponse,
+} from './exceptions.interface';
 
 // Exception class for Internal Server Error
 export class InternalServerErrorException extends HttpException {
@@ -76,7 +79,9 @@ export class InternalServerErrorException extends HttpException {
    * @param message A string representing the message to include in the response body.
    * @returns An object representing the HTTP response body.
    */
-  generateHttpResponseBody = (message?: string): IHttpInternalServerErrorExceptionResponse => {
+  generateHttpResponseBody = (
+    message?: string,
+  ): IHttpInternalServerErrorExceptionResponse => {
     return {
       _meta: {
         code: this.code,
@@ -95,7 +100,8 @@ export class InternalServerErrorException extends HttpException {
    */
   static INTERNAL_SERVER_ERROR = (error: any) => {
     return new InternalServerErrorException({
-      message: 'We are sorry, something went wrong on our end. Please try again later or contact our support team for assistance.',
+      message:
+        'We are sorry, something went wrong on our end. Please try again later or contact our support team for assistance.',
       code: ExceptionConstants.InternalServerErrorCodes.INTERNAL_SERVER_ERROR,
       cause: error,
     });

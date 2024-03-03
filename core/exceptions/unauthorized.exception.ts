@@ -8,7 +8,10 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 
 // Import internal modules
 import { ExceptionConstants } from './exceptions.constants';
-import { IException, IHttpUnauthorizedExceptionResponse } from './exceptions.interface';
+import {
+  IException,
+  IHttpUnauthorizedExceptionResponse,
+} from './exceptions.interface';
 
 /**
  * A custom exception for unauthorized access errors.
@@ -90,7 +93,9 @@ export class UnauthorizedException extends HttpException {
    * @param message A string representing the message to include in the response body.
    * @returns An object representing the HTTP response body.
    */
-  generateHttpResponseBody = (message?: string): IHttpUnauthorizedExceptionResponse => {
+  generateHttpResponseBody = (
+    message?: string,
+  ): IHttpUnauthorizedExceptionResponse => {
     return {
       _meta: {
         code: this.code,
@@ -158,7 +163,9 @@ export class UnauthorizedException extends HttpException {
    */
   static USER_NOT_VERIFIED = (msg?: string) => {
     return new UnauthorizedException({
-      message: msg || 'User not verified. Please complete verification process before attempting this action.',
+      message:
+        msg ||
+        'User not verified. Please complete verification process before attempting this action.',
       code: ExceptionConstants.UnauthorizedCodes.USER_NOT_VERIFIED,
     });
   };
@@ -170,7 +177,8 @@ export class UnauthorizedException extends HttpException {
    */
   static UNEXPECTED_ERROR = (error: any) => {
     return new UnauthorizedException({
-      message: 'An unexpected error occurred while processing the request. Please try again later.',
+      message:
+        'An unexpected error occurred while processing the request. Please try again later.',
       code: ExceptionConstants.UnauthorizedCodes.UNEXPECTED_ERROR,
       cause: error,
     });
@@ -197,7 +205,9 @@ export class UnauthorizedException extends HttpException {
    */
   static INVALID_RESET_PASSWORD_TOKEN = (msg?: string) => {
     return new UnauthorizedException({
-      message: msg || 'The reset password token provided is invalid. Please request a new reset password token.',
+      message:
+        msg ||
+        'The reset password token provided is invalid. Please request a new reset password token.',
       code: ExceptionConstants.UnauthorizedCodes.INVALID_RESET_PASSWORD_TOKEN,
     });
   };
