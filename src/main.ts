@@ -1,14 +1,26 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { Logger } from '@nestjs/common';
 import config from 'src/config';
 
-const PORT = config.port || 3000;
+const { appUrl, port } = config;
 
 async function startServer() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(PORT);
-  Logger.log(`Server running on 👉 http://localhost:${PORT}`, 'Main');
+
+  const docConfig = new DocumentBuilder()
+    .setTitle('Cats example')
+    .setDescription('The cats API description')
+    .setVersion('1.0')
+    .addTag('cats')
+    .build();
+  const document = SwaggerModule.createDocument(app, docConfig);
+  SwaggerModule.setup('docs', app, document);
+
+  await app.listen(port);
+  Logger.log(`Server running on 👉 ${appUrl}:${port}`, 'Main');
+  Logger.log(`Swagger running on 👉  ${appUrl}:${port}/docs`, 'Main');
   Logger.log('All Systems Go! 🚀', 'Main');
 }
 startServer();

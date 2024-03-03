@@ -1,7 +1,8 @@
 import { Logger } from '@nestjs/common';
 import * as dotenv from 'dotenv';
+dotenv.config();
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+console.log(process.env.PORT);
 
 if (!process.env.PORT) {
   // This error should crash whole process
@@ -27,6 +28,11 @@ export default {
    * Your favorite port
    */
   port: parseInt(process.env.PORT, 10),
+
+  /**
+   * URL of your app
+   */
+  appUrl: process.env.APP_URL || 'http://localhost',
 
   /**
    * That long string from mlab
