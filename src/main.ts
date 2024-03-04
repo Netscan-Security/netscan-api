@@ -10,10 +10,9 @@ async function startServer() {
   const app = await NestFactory.create(AppModule);
 
   const docConfig = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
+    .setTitle('Net Scan API')
+    .setDescription('Net Scan API Documentation')
     .setVersion('1.0')
-    .addTag('cats')
     .build();
   const document = SwaggerModule.createDocument(app, docConfig);
   SwaggerModule.setup('docs', app, document);
