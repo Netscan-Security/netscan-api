@@ -13,8 +13,6 @@ import {
 import { UsersModule } from './modules/users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { NestDrizzleModule } from './modules/drizzle/drizzle.module';
-import { PhoneService } from './services/phone/phone.service';
-import { PhoneController } from './controllers/phone/phone.controller';
 import { OpenaiService } from './services/openai/openai.service';
 import * as schema from './modules/drizzle/schema';
 import config from 'src/config';
@@ -34,7 +32,7 @@ import config from 'src/config';
       },
     }),
   ],
-  controllers: [AppController, PhoneController],
+  controllers: [AppController],
   providers: [
     AppService,
 
@@ -53,7 +51,6 @@ import config from 'src/config';
           },
         }),
     },
-    PhoneService,
     OpenaiService,
   ],
 })
