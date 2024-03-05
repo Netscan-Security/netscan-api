@@ -18,3 +18,4 @@ export const cityRelation = relations(cities, ({ one }) => ({
     references: [countries.id],
   }),
 }));
+
