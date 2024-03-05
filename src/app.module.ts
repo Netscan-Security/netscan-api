@@ -13,7 +13,6 @@ import {
 import { UsersModule } from './modules/users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { NestDrizzleModule } from './modules/drizzle/drizzle.module';
-import { OpenaiService } from './services/openai/openai.service';
 import * as schema from './modules/drizzle/schema';
 import config from 'src/config';
 
@@ -51,7 +50,6 @@ import config from 'src/config';
           },
         }),
     },
-    OpenaiService,
   ],
 })
 export class AppModule {}
