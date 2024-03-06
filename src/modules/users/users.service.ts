@@ -10,12 +10,6 @@ export class UsersService {
   ) {}
 
   async findAll() {
-    return this.conn.query.cities.findMany({
-      with: {
-        country_city: true,
-      },
-    });
-    // return this.conn.query.cities.findMany();
-    //     return await this.conn.query.users.findMany();
+    return this.conn.query.users.findMany({});
   }
 }
