@@ -15,6 +15,20 @@
       "when": 1709747001059,
       "tag": "0001_modern_titania",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1709748495514,
+      "tag": "0002_wide_medusa",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1709748565009,
+      "tag": "0003_confused_speed_demon",
+      "breakpoints": true
     }
   ]
 }

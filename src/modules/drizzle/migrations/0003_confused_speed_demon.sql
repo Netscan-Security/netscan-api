@@ -1,0 +1,1 @@
+ALTER TABLE "organization_user" DROP CONSTRAINT "organization_user_pk";
