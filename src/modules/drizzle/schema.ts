@@ -45,6 +45,56 @@ export const organizationUser = pgTable(
   },
 );
 
+// Hosts table
+export const hosts = pgTable('hosts', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  name: text('name').notNull(),
+});
+
+// Antivirus table
+export const antivirus = pgTable('antivirus', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  name: text('name').notNull(),
+});
+
+// Logs table
+export const logs = pgTable('logs', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  userId: uuid('user_id').references(() => users.id),
+  organizationId: uuid('organization_id').references(() => organizations.id),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+});
+
+// Buildings table
+export const buildings = pgTable('buildings', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  name: text('name').notNull(),
+  organizationId: uuid('organization_id').references(() => organizations.id),
+});
+
+// Rooms table
+export const rooms = pgTable('rooms', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  buildingId: uuid('building_id').references(() => buildings.id),
+  name: text('name').notNull(),
+});
+
+// Vulnerabilities table
+export const vulnerabilities = pgTable('vulnerabilities', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  target: text('target').notNull(),
+  type: text('type').notNull(),
+  organizationId: uuid('organization_id').references(() => organizations.id),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+});
+
+// ScanTypes table
+export const scanTypes = pgTable('scan_types', {
+  id: uuid('id').defaultRandom().primaryKey(),
+});
+
 // ! This is not working, Need ot fix relations. getting error when opening studio
 // ! Error: There is not enough information to infer relation "__public__.organizations.organizationUser"
 // export const organizationRelations = relations(organizations, ({ many }) => ({
