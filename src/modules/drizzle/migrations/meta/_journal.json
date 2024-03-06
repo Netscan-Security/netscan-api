@@ -8,6 +8,13 @@
       "when": 1709746616879,
       "tag": "0000_first_grandmaster",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1709747001059,
+      "tag": "0001_modern_titania",
+      "breakpoints": true
     }
   ]
 }
