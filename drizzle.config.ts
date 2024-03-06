@@ -3,7 +3,7 @@ import config from 'src/config';
 
 export default {
   schema: './src/modules/drizzle/schema.ts',
-  out: './migration',
+  out: './src/modules/drizzle/migrations',
   driver: 'pg',
   dbCredentials: {
     connectionString: config.databaseURL,

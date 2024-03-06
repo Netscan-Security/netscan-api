@@ -37,12 +37,22 @@ import config from 'src/config';
           driver: 'postgres-js',
           url: config.databaseURL,
           options: { schema },
-          migrationOptions: { migrationsFolder: './migration' },
+          migrationOptions: {
+            migrationsFolder: './src/modules/drizzle/migrations',
+          },
         };
       },
     }),
   ],
-  controllers: [AppController, TestController, LogsController, AntVirusController, ScannerController, VulnerabilityController, HostController],
+  controllers: [
+    AppController,
+    TestController,
+    LogsController,
+    AntVirusController,
+    ScannerController,
+    VulnerabilityController,
+    HostController,
+  ],
   providers: [
     AppService,
 

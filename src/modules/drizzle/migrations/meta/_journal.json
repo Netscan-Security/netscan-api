@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1709746616879,
+      "tag": "0000_first_grandmaster",
+      "breakpoints": true
+    }
+  ]
+}
