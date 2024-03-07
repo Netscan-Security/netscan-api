@@ -139,8 +139,6 @@ export const scans = pgTable('scans', {
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
-
-
 // ! This is not working, Need ot fix relations. getting error when opening studio
 // ! Error: There is not enough information to infer relation "__public__.organizations.organizationUser"
 // export const organizationRelations = relations(organizations, ({ many }) => ({
