@@ -68,9 +68,9 @@ export const hosts = pgTable('hosts', {
 export const antivirus = pgTable('antivirus', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: text('name').notNull(),
-  host: uuid('host').references(() => hosts.id),
+  hostId: uuid('hostId').references(() => hosts.id),
   dbVersion: text('db_version').notNull(),
-  lastUpdate: timestamp('last_update').notNull(),
+  lastUpdate: timestamp('last_update').notNull().defaultNow(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
@@ -78,7 +78,7 @@ export const antivirus = pgTable('antivirus', {
 // Logs table
 export const logs = pgTable('logs', {
   id: uuid('id').defaultRandom().primaryKey(),
-  host: uuid('host').references(() => hosts.id),
+  hostId: uuid('hostId').references(() => hosts.id),
   log: text('log').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
@@ -114,9 +114,10 @@ export const rooms = pgTable('rooms', {
 // Vulnerabilities table
 export const vulnerabilities = pgTable('vulnerabilities', {
   id: uuid('id').defaultRandom().primaryKey(),
-  target: text('target').notNull(),
+  hostId: text('hostId').notNull(),
   type: text('type').notNull(),
-  organizationId: uuid('organization_id').references(() => organizations.id),
+  severity: text('severity').notNull(),
+  description: text('description'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
@@ -132,7 +133,7 @@ export const scanTypes = pgTable('scan_types', {
 // Scan
 export const scans = pgTable('scans', {
   id: uuid('id').defaultRandom().primaryKey(),
-  host: uuid('host').references(() => hosts.id),
+  hostId: uuid('hostId').references(() => hosts.id),
   status: text('status').notNull(),
   scanType: uuid('scan_type').references(() => scanTypes.id),
   createdAt: timestamp('created_at').notNull().defaultNow(),
@@ -148,3 +149,5 @@ export const scans = pgTable('scans', {
 // export const usersRelations = relations(users, ({ many }) => ({
 //   organizationUser: many(organizationUser),
 // }));
+
+//sample uuid aaaabbbb-1111-2222-3333-ccccdddd1234
