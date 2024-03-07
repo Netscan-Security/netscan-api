@@ -6,7 +6,13 @@ import { faker } from '@faker-js/faker';
 
 dotenv.config();
 
-const connectionString = process.env.DATABASE_URL;
+const environment = process.env.NODE_ENV || 'development';
+
+const connectionString =
+  environment === 'production'
+    ? process.env.DATABASE_URL
+    : process.env.TEST_DATABASE_URL;
+
 const maxValues = 50;
 
 const pool = new Pool({

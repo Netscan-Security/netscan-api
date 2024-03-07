@@ -2,8 +2,6 @@ import { Logger } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-console.log(process.env.PORT);
-
 if (!process.env.PORT) {
   // This error should crash whole process
   // before we used to check with dotenv.config() to see if it was successful
@@ -30,6 +28,12 @@ export default {
   port: parseInt(process.env.PORT, 10),
 
   /**
+   * Environment
+   * 'development' | 'production'
+   */
+  nodeEnv: process.env.NODE_ENV || 'development',
+
+  /**
    * URL of your app
    */
   appUrl: process.env.APP_URL || 'http://localhost',
@@ -37,7 +41,10 @@ export default {
   /**
    * That long string from mlab
    */
-  databaseURL: process.env.DATABASE_URL,
+  databaseURL:
+    process.env.NODE_ENV === 'production'
+      ? process.env.DATABASE_URL
+      : process.env.TEST_DATABASE_URL,
 
   /**
    * Your OpenAI API stuff
