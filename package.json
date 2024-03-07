@@ -20,6 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "generate": "drizzle-kit generate:pg",
     "migrate": "drizzle-kit push:pg",
+    "seed": "npx ts-node ./src/modules/drizzle/seed.ts",
     "studio": "drizzle-kit studio"
   },
   "dependencies": {
