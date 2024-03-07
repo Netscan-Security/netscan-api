@@ -6,10 +6,10 @@ import * as schema from '../../modules/drizzle/schema';
 @Injectable()
 export class HostService {
   constructor(
-    @Inject(DRIZZLE_ORM) private conn: PostgresJsDatabase<typeof schema>,
+    @Inject(DRIZZLE_ORM) private db: PostgresJsDatabase<typeof schema>,
   ) {}
 
   async findAll() {
-    return this.conn.query.hosts.findMany({});
+    return await this.db.query.hosts.findMany({});
   }
 }

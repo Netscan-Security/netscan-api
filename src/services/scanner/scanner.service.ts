@@ -6,10 +6,10 @@ import * as schema from '../../modules/drizzle/schema';
 @Injectable()
 export class ScannerService {
   constructor(
-    @Inject(DRIZZLE_ORM) private conn: PostgresJsDatabase<typeof schema>,
+    @Inject(DRIZZLE_ORM) private db: PostgresJsDatabase<typeof schema>,
   ) {}
 
   async findAll() {
-    return this.conn.query.scanTypes.findMany({});
+    return this.db.query.scanTypes.findMany({});
   }
 }
