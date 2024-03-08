@@ -51,12 +51,8 @@ export const organizationUser = pgTable(
 export const hosts = pgTable('hosts', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: text('name').notNull(),
-  userId: uuid('user_id')
-    .references(() => users.id)
-    .notNull(),
-  roomId: uuid('room_id')
-    .references(() => rooms.id)
-    .notNull(),
+  userId: uuid('user_id').references(() => users.id),
+  roomId: uuid('room_id').references(() => rooms.id),
   cpu: text('cpu').notNull(),
   memory: text('memory').notNull(),
   gpu: text('gpu').notNull(),
