@@ -4,6 +4,7 @@ import {
   timestamp,
   primaryKey,
   uuid,
+  jsonb
 } from 'drizzle-orm/pg-core';
 
 // Users
@@ -79,7 +80,7 @@ export const antivirus = pgTable('antivirus', {
 export const logs = pgTable('logs', {
   id: uuid('id').defaultRandom().primaryKey(),
   hostId: uuid('hostId').references(() => hosts.id),
-  log: text('log').notNull(),
+  log: jsonb('log').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
