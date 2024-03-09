@@ -37,6 +37,11 @@ export class HostDto implements Omit<Host, 'id' | 'created_at' | 'updated_at'> {
    */
   hardDisk: string;
   /**
+   * Raw information of the host
+   * @example { cpu: 'Intel Core i7', memory: '16GB', gpu: 'Nvidia GTX 1060', hardDisk: '1TB', os: 'Windows 10', model: 'Dell', ipAddress: '23.233.3232.' }
+   */
+  rawInfo: object;
+  /**
    * The os of the host
    * @example 'Windows 10'
    */

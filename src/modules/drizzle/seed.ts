@@ -273,7 +273,9 @@ async function seedData() {
     const log = {
       id: faker.string.uuid(),
       hostId: hosts[i]?.id ?? hosts[0].id,
-      log: faker.lorem.sentence(), // Generate random log message
+      log: {
+        message: faker.lorem.sentence(),
+      },
       createdAt: faker.date.recent(),
     };
     logs.push(log);

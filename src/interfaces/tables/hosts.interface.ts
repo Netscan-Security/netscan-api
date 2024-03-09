@@ -8,6 +8,7 @@ export class Host {
   gpu: string;
   hardDisk: string;
   os: string;
+  rawInfo: any;
   model: string;
   ipAddress: string;
   created_at: number;
