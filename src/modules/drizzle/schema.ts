@@ -4,7 +4,8 @@ import {
   timestamp,
   primaryKey,
   uuid,
-  jsonb
+  jsonb,
+  boolean,
 } from 'drizzle-orm/pg-core';
 
 // Users
@@ -18,6 +19,7 @@ export const users = pgTable('users', {
   password: text('password').notNull(),
   imageUrl: text('image_url').notNull(),
   role: text('role', { enum: ['admin', 'user'] }).notNull(),
+  hasHost: boolean('has_host').notNull().default(false),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
@@ -59,6 +61,7 @@ export const hosts = pgTable('hosts', {
   gpu: text('gpu').notNull(),
   hardDisk: text('hard_disk').notNull(),
   os: text('os').notNull(),
+  rawInfo: jsonb('raw_info').notNull().default('{}'),
   model: text('model').notNull(),
   ipAddress: text('ip_address').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
