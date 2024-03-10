@@ -11,6 +11,6 @@ export class Host {
   rawInfo: any;
   model: string;
   ipAddress: string;
-  created_at: number;
-  updated_at: number;
+  createdAt: Date;
+  updatedAt: Date;
 }

@@ -1,38 +1,40 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Request,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { AppService } from './app.service';
-import { BadRequestException } from './core/exceptions';
-import { ExceptionConstants } from './core/exceptions/exceptions.constants';
-import { IsNotEmpty, IsNumber } from 'class-validator';
-
-export class IName {
-  // @IsNotEmpty()
-  name: string;
-}
-
-export class IPhone {
-  @IsNotEmpty()
-  phone: string;
-}
-
-export class IAge {
-  @IsNotEmpty()
-  @IsNumber()
-  age: number;
-}
+import { LocalAuthGuard } from './auth/local-auth.guard';
+import { AuthService } from './auth/auth.service';
+import { UsersService } from './modules/users/users.service';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UsersService,
+    private appService: AppService,
+  ) {}
+
+  @UseGuards(LocalAuthGuard)
+  @Post('auth/login')
+  async login(@Request() req) {
+    return this.authService.login(req.user);
+  }
 
   @Get()
-  getHello(@Query() query: IName): string {
+  getHello(@Query() query): string {
     console.log(query);
     return this.appService.getHello();
-    throw new BadRequestException({
-      message: 'Bad Request Exception',
-      cause: new Error('haha'),
-      description: 'description',
-      code: ExceptionConstants.BadRequestCodes.INVALID_PARAMETER_VALUE,
-    });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile(@Request() req) {
+    return this.userService.findOne(req.user.username);
   }
 }

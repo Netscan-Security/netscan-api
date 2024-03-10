@@ -24,6 +24,7 @@ import { ScannerService } from './services/scanner/scanner.service';
 import { HostController } from './controllers/host/host.controller';
 import { HostService } from './services/host/host.service';
 import { AntVirusService } from './services/ant-virus/ant-virus.service';
+import { AuthModule } from './auth/auth.module';
 import * as schema from './modules/drizzle/schema';
 import config from 'src/config';
 
@@ -43,6 +44,7 @@ import config from 'src/config';
         };
       },
     }),
+    AuthModule,
   ],
   controllers: [
     AppController,

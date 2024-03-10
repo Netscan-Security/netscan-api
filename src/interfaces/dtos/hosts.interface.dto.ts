@@ -1,6 +1,6 @@
 import { Host } from '../tables/hosts.interface';
 
-export class HostDto implements Omit<Host, 'id' | 'created_at' | 'updated_at'> {
+export class HostDto implements Omit<Host, 'id' | 'createdAt' | 'updatedAt'> {
   /**
    * A name for the host
    * @example 'Host1'
