@@ -9,9 +9,13 @@ if (!process.env.PORT) {
 
   throw new Error("⚠️  Couldn't find .env file  ⚠️");
 }
+Logger.log(
+  `🔥🔥 We are on ${process.env.NODE_ENV} Environment!! 🔥🔥`,
+  'Environment',
+);
 Logger.log(`✌️ environment variables loaded! ✅`, 'Environment');
 
-const requiredEnvVars = ['DATABASE_URL', 'OPEN_AI_API_KEY'];
+const requiredEnvVars = ['DATABASE_URL', 'OPEN_AI_API_KEY', 'JWT_SECRET'];
 
 requiredEnvVars.forEach((envVar) => {
   if (!process.env[envVar]) {
@@ -20,7 +24,6 @@ requiredEnvVars.forEach((envVar) => {
 });
 
 Logger.log('✌️ all required environment variables found! ✅', 'Environment');
-
 export default {
   /**
    * Your favorite port
@@ -45,6 +48,17 @@ export default {
     process.env.NODE_ENV === 'production'
       ? process.env.DATABASE_URL
       : process.env.TEST_DATABASE_URL,
+
+  /**
+   * Your jwt secret key
+   * You can generate one from here: https://www.grc.com/passwords.htm
+   * For production, you should use a long random string and add it to your environment variables
+   * For development, you can just use a simple random string
+   */
+  jwtSecret:
+    process.env.NODE_ENV === 'production'
+      ? process.env.JWT_SECRET
+      : `55wiyO5chu6gpPzKhLYe46t4cy071RNHovqtyInEie2KwRnSocM7aJezt6EnAAy`,
 
   /**
    * Your OpenAI API stuff
