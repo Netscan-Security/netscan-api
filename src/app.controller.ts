@@ -61,6 +61,6 @@ export class AppController {
     description: 'Bearer token for authentication',
   })
   getProfile(@Request() req) {
-    return this.userService.findOne(req.user.username);
+    return this.userService.findByUsername(req.user.username);
   }
 }

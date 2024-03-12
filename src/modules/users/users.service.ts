@@ -13,27 +13,43 @@ export class UsersService {
 
   async findAll() {
     const data = await this.db.query.users.findMany({});
-    Logger.log('/FindAll: ', data);
+    Logger.log('User Service', '/FindAll: ', data);
     return this.db.query.users.findMany({});
   }
 
-  async findOne(username: string) {
-    type SelectUser = typeof schema.users.$inferSelect;
-    Logger.log('Finding User: ', username);
-    const data: SelectUser = await this.db.query.users.findFirst({
+  async findByUsername(username: string) {
+    Logger.log('User Service', 'Finding User by username: ', username);
+    const data = await this.db.query.users.findFirst({
       where: eq(schema.users.username, username),
     });
-    Logger.log('Found User by username: ', data);
+    Logger.log('User Service', 'Found User by username: ', data);
     return data;
   }
 
   async findByEmail(email: string) {
-    type SelectUser = typeof schema.users.$inferSelect;
-    Logger.log('Finding User: ', email);
-    const data: SelectUser = await this.db.query.users.findFirst({
+    Logger.log('User Service', 'Finding User by email: ', email);
+    const data = await this.db.query.users.findFirst({
       where: eq(schema.users.email, email),
     });
-    Logger.debug('Found by email: ', data);
+    Logger.debug('User Service', 'Found by email: ', data);
+    return data;
+  }
+
+  async findByContactNumber(contactNumber: string) {
+    Logger.debug('User Service', 'Finding User: ', contactNumber);
+    const data = await this.db.query.users.findFirst({
+      where: eq(schema.users.contactNumber, contactNumber),
+    });
+    Logger.debug('User Service', 'Found by contact number: ', data);
+    return data;
+  }
+
+  async findById(id: string) {
+    Logger.log('User Service', 'Finding User: ', id);
+    const data = await this.db.query.users.findFirst({
+      where: eq(schema.users.id, id),
+    });
+    Logger.debug('User Service', 'Found by id: ', data);
     return data;
   }
 
@@ -43,7 +59,7 @@ export class UsersService {
       .values(data)
       .returning()
       .execute();
-    Logger.debug('Created User: ', result);
+    Logger.debug('User Service', 'Created User: ', result);
     return result[0];
   }
 }

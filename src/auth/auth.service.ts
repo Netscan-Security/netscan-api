@@ -15,7 +15,7 @@ export class AuthService {
 
   async validateUser(username: string, password: string): Promise<any> {
     Logger.debug('Validating User: ', username);
-    const user = await this.usersService.findOne(username);
+    const user = await this.usersService.findByUsername(username);
     if (comparePassword(password, user.password)) {
       delete user.password;
 
@@ -24,9 +24,9 @@ export class AuthService {
     return null;
   }
 
-  async checkIfUserExist(username: string) {
+  async checkIfUsernameExist(username: string) {
     Logger.debug('Checking if user exist: ', username);
-    const user = await this.usersService.findOne(username);
+    const user = await this.usersService.findByUsername(username);
     if (user) {
       return true;
     }
@@ -42,9 +42,27 @@ export class AuthService {
     return false;
   }
 
+  async checkIfContactNumberExist(contactNumber: string) {
+    Logger.debug('Checking if contact number exist: ', contactNumber);
+    const user = await this.usersService.findByContactNumber(contactNumber);
+    if (user) {
+      return true;
+    }
+    return false;
+  }
+
+  async checkIfUserExist(id: string) {
+    Logger.debug('Checking if user exist: ', id);
+    const user = await this.usersService.findById(id);
+    if (user) {
+      return true;
+    }
+    return false;
+  }
+
   async login(user: any) {
     // check if username exist
-    const userExist = await this.checkIfUserExist(user.username);
+    const userExist = await this.checkIfUsernameExist(user.username);
     if (!userExist) {
       return {
         message: 'Invalid username or password',
@@ -78,7 +96,7 @@ export class AuthService {
   async signup(data: CreateUserDto) {
     Logger.debug('Signing up user: ', data.username);
     // check if username exist
-    const userExist = await this.checkIfUserExist(data.username);
+    const userExist = await this.checkIfUsernameExist(data.username);
     if (userExist) {
       return {
         message: 'Username already exist',
@@ -90,6 +108,25 @@ export class AuthService {
       return {
         message: 'Email already exist',
       };
+    }
+
+    const contactNumberExist = await this.usersService.findByContactNumber(
+      data.contactNumber,
+    );
+    if (contactNumberExist) {
+      return {
+        message: 'Contact number already exist',
+      };
+    }
+
+    // if there is data.createBy, check if the user exist
+    if (data.createdBy) {
+      const createdByExist = await this.checkIfUserExist(data.createdBy);
+      if (!createdByExist) {
+        return {
+          message: 'User who is creating this user does not exist',
+        };
+      }
     }
 
     data.password = await hashPassword(data.password);
