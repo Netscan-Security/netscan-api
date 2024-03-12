@@ -23,7 +23,17 @@ export class UsersService {
     const data: SelectUser = await this.db.query.users.findFirst({
       where: eq(schema.users.username, username),
     });
-    Logger.log('Your found', data);
+    Logger.log('Found User by username: ', data);
+    return data;
+  }
+
+  async findByEmail(email: string) {
+    type SelectUser = typeof schema.users.$inferSelect;
+    Logger.log('Finding User: ', email);
+    const data: SelectUser = await this.db.query.users.findFirst({
+      where: eq(schema.users.email, email),
+    });
+    Logger.debug('Found by email: ', data);
     return data;
   }
 
@@ -33,7 +43,7 @@ export class UsersService {
       .values(data)
       .returning()
       .execute();
-    Logger.log('Created User: ', result);
+    Logger.debug('Created User: ', result);
     return result[0];
   }
 }

@@ -8,11 +8,15 @@ import {
   Body,
 } from '@nestjs/common';
 import { AppService } from './app.service';
-import { LocalAuthGuard } from './auth/local-auth.guard';
+// import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { UsersService } from './modules/users/users.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
-import { CreateUserDto } from './interfaces/dtos/users.interface.dto';
+import {
+  CreateUserDto,
+  LoginUserDto,
+} from './interfaces/dtos/users.interface.dto';
+import { ApiBearerAuth, ApiHeader } from '@nestjs/swagger';
 
 @Controller()
 export class AppController {
@@ -22,23 +26,16 @@ export class AppController {
     private appService: AppService,
   ) {}
 
-  @UseGuards(LocalAuthGuard)
+  // @UseGuards(LocalAuthGuard)
   @Post('auth/login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  async login(@Body() data: LoginUserDto) {
+    return this.authService.login(data);
   }
 
-  // @UseGuards(JwtAuthGuard)
   @Post('auth/signup')
   async signup(@Body() data: CreateUserDto) {
     return this.authService.signup(data);
   }
-
-  // @Post('register')
-  // registerHost(@Body() data: HostDto) {
-  //   Logger.log('Registering host', `${JSON.stringify(data)}`);
-  //   return this.hostService.create(data);
-  // }
 
   // @UseGuards(JwtAuthGuard)
   // @Get('auth/logout')
@@ -54,6 +51,11 @@ export class AppController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
+  @ApiBearerAuth()
+  @ApiHeader({
+    name: 'Authorization: Bearer',
+    description: 'Bearer token for authentication',
+  })
   getProfile(@Request() req) {
     return this.userService.findOne(req.user.username);
   }

@@ -55,3 +55,16 @@ export class CreateUserDto
    * @example '2021-01-01T00:00:00Z'
    */
 }
+
+export class LoginUserDto {
+  /**
+   * The username of the user
+   * @example 'johndoe'
+   */
+  username: string;
+  /**
+   * The password of the user
+   * @example 'password'
+   */
+  password: string;
+}
