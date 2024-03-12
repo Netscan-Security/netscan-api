@@ -31,7 +31,7 @@ export class CreateUserDto
    */
   contactNumber: string;
   /**
-   * The user who created the user
+   * The user who created the user, it must be a uuid and a valid user id
    * @example '123e4567-e89b-12d3-a456-426614174000'
    * @default null
    */

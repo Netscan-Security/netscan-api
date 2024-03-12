@@ -1,0 +1,1 @@
+ALTER TABLE "logs" DROP COLUMN IF EXISTS "log";

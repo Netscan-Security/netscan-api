@@ -120,6 +120,20 @@
       "when": 1710275071514,
       "tag": "0016_wealthy_jetstream",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "5",
+      "when": 1710276176988,
+      "tag": "0017_safe_hedge_knight",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "5",
+      "when": 1710276350434,
+      "tag": "0018_steep_blue_blade",
+      "breakpoints": true
     }
   ]
 }

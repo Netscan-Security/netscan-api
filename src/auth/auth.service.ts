@@ -92,19 +92,14 @@ export class AuthService {
       };
     }
 
-    try {
-      data.password = await hashPassword(data.password);
-      const user: User = await this.usersService.create(data);
-      if (!user) {
-        return error('Error creating user');
-      }
-      const access_token = (await this.signIn(user)).access_token;
-      delete user.password;
-      const result: UserResponse = { user, access_token };
-      return result;
-    } catch (error) {
-      Logger.error('Error signing up user', error);
-      throw error('Error signing up user');
+    data.password = await hashPassword(data.password);
+    const user: User = await this.usersService.create(data);
+    if (!user) {
+      return error('Error creating user');
     }
+    const access_token = (await this.signIn(user)).access_token;
+    delete user.password;
+    const result: UserResponse = { user, access_token };
+    return result;
   }
 }
