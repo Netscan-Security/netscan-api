@@ -3,6 +3,7 @@ import * as schema from '../drizzle/schema';
 import { DRIZZLE_ORM } from 'src/core/constants/db.constants';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { eq } from 'drizzle-orm';
+import { CreateUserDto } from 'src/interfaces/dtos/users.interface.dto';
 
 @Injectable()
 export class UsersService {
@@ -24,5 +25,15 @@ export class UsersService {
     });
     Logger.log('Your found', data);
     return data;
+  }
+
+  async create(data: CreateUserDto): Promise<any> {
+    const result = await this.db
+      .insert(schema.users)
+      .values(data)
+      .returning()
+      .execute();
+    Logger.log('Created User: ', result);
+    return result[0];
   }
 }
