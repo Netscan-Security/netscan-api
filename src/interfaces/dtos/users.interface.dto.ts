@@ -31,6 +31,12 @@ export class CreateUserDto
    */
   contactNumber: string;
   /**
+   * The user who created the user
+   * @example '123e4567-e89b-12d3-a456-426614174000'
+   * @default null
+   */
+  createdBy: string;
+  /**
    * The password of the user
    * @example 'password'
    */

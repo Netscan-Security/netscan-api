@@ -18,7 +18,10 @@ export const users = pgTable('users', {
   contactNumber: text('contact_number').unique().notNull(),
   password: text('password').notNull(),
   imageUrl: text('image_url').notNull(),
-  role: text('role', { enum: ['admin', 'user', 'superAdmin'] }).notNull(),
+  role: text('role', { enum: ['admin', 'user', 'superAdmin'] })
+    .notNull()
+    .default('user'),
+  createdBy: uuid('created_by').references(() => users.id),
   hasHost: boolean('has_host').notNull().default(false),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
