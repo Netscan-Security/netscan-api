@@ -15,7 +15,12 @@ Logger.log(
 );
 Logger.log(`✌️ environment variables loaded! ✅`, 'Environment');
 
-const requiredEnvVars = ['DATABASE_URL', 'OPEN_AI_API_KEY', 'JWT_SECRET'];
+const requiredEnvVars = [
+  'DATABASE_URL',
+  'OPEN_AI_API_KEY',
+  'JWT_SECRET',
+  'CORS_DOMAINS',
+];
 
 requiredEnvVars.forEach((envVar) => {
   if (!process.env[envVar]) {
@@ -44,10 +49,7 @@ export default {
   /**
    * That long string from mlab
    */
-  databaseURL:
-    process.env.NODE_ENV === 'production'
-      ? process.env.DATABASE_URL
-      : process.env.TEST_DATABASE_URL,
+  databaseURL: process.env.DATABASE_URL,
 
   /**
    * Your jwt secret key
