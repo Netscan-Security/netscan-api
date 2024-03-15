@@ -17,21 +17,15 @@ async function startServer() {
   const document = SwaggerModule.createDocument(app, docConfig);
   SwaggerModule.setup('docs', app, document);
 
-  const devOrigins = [
-    'http://localhost:3000',
-    'http://localhost:5173',
-    'http://localhost:3001',
-  ];
-  const prodOrigins = process.env.CORS_DOMAINS
+  const Origins = process.env.CORS_DOMAINS
     ? process.env.CORS_DOMAINS.split(',')
     : [];
 
   app.enableCors({
     origin: function (origin, callback) {
-      const allowedOrigins =
-        process.env.NODE_ENV === 'production' ? prodOrigins : devOrigins;
+      const allowedOrigins = Origins;
       if (!origin) {
-        Logger.log('Request with no origin');
+        Logger.debug('Request with no origin');
         return callback(null, true); // allow requests with no origin (like mobile apps or curl requests)
       }
       if (
