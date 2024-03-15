@@ -51,6 +51,12 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  // health
+  @Get('health')
+  getHealth(): string {
+    return 'OK';
+  }
+
   // !NOTE - This is a protected route that requires a valid JWT token, it is passed to the header as a Bearer token
   // !NOTE - For now we can't test this on the browser with swagger, we need to use Postman or Hoppscotch
   @UseGuards(JwtAuthGuard)
