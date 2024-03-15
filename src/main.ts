@@ -17,20 +17,33 @@ async function startServer() {
   const document = SwaggerModule.createDocument(app, docConfig);
   SwaggerModule.setup('docs', app, document);
 
+  const devOrigins = [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://localhost:3001',
+  ];
+  const prodOrigins = process.env.CORS_DOMAINS
+    ? process.env.CORS_DOMAINS.split(',')
+    : [];
+
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'https://localhost:3000',
-      'http://localhost:5173',
-      'https://localhost:5173',
-      'http://example.com',
-      'http://www.example.com',
-      'http://app.example.com',
-      'https://example.com',
-      'https://www.example.com',
-      'https://app.example.com',
-    ],
-    methods: ['GET', 'POST'],
+    origin: function (origin, callback) {
+      const allowedOrigins =
+        process.env.NODE_ENV === 'production' ? prodOrigins : devOrigins;
+      if (!origin) {
+        Logger.log('Request with no origin');
+        return callback(null, true); // allow requests with no origin (like mobile apps or curl requests)
+      }
+      if (
+        allowedOrigins.some((domain) => origin.startsWith(domain)) ||
+        allowedOrigins.some((domain) => origin.includes(domain))
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     credentials: true,
   });
 
