@@ -17,6 +17,23 @@ async function startServer() {
   const document = SwaggerModule.createDocument(app, docConfig);
   SwaggerModule.setup('docs', app, document);
 
+  app.enableCors({
+    origin: [
+      'http://localhost:3000',
+      'https://localhost:3000',
+      'http://localhost:5173',
+      'https://localhost:5173',
+      'http://example.com',
+      'http://www.example.com',
+      'http://app.example.com',
+      'https://example.com',
+      'https://www.example.com',
+      'https://app.example.com',
+    ],
+    methods: ['GET', 'POST'],
+    credentials: true,
+  });
+
   await app.listen(port);
   Logger.log(`Server running on 👉 ${appUrl}:${port}`, 'Main');
   Logger.log(`Swagger running on 👉  ${appUrl}:${port}/docs`, 'Main');
