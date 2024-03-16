@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AntVirusController } from './ant-virus.controller';
+import { AntVirusController } from './antivirus.controller';
 
 describe('AntVirusController', () => {
   let controller: AntVirusController;
