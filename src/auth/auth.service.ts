@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { error } from 'console';
 import { User, UserResponse } from 'src/interfaces/tables/users.interface';
 import { CreateUserDto } from 'src/interfaces/dtos/users.interface.dto';
+import { cleanPassword } from 'src/common/utils/clean';
 
 @Injectable()
 export class AuthService {
@@ -13,9 +14,23 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, password: string): Promise<any> {
+  async validateUserWithUsername(
+    username: string,
+    password: string,
+  ): Promise<any> {
     Logger.debug('Validating User: ', username);
-    const user = await this.usersService.findByUsername(username);
+    const user = await this.usersService.findByUsername(username, true);
+    if (comparePassword(password, user.password)) {
+      delete user.password;
+
+      return user;
+    }
+    return null;
+  }
+
+  async validateUserWithEmail(email: string, password: string): Promise<any> {
+    Logger.debug('Validating User: ', email);
+    const user = await this.usersService.findByEmail(email, true);
     if (comparePassword(password, user.password)) {
       delete user.password;
 
@@ -61,28 +76,32 @@ export class AuthService {
   }
 
   async login(user: any) {
-    // check if username exist
-    const userExist = await this.checkIfUsernameExist(user.username);
+    // check if email exist
+    const userExist = await this.checkIfEmailExist(user.email);
     if (!userExist) {
       return {
-        message: 'Invalid username or password',
+        message: 'Invalid email or password',
       };
     }
 
     // validate the user
-    const isValid = await this.validateUser(user.username, user.password);
+    const isValid = await this.validateUserWithEmail(user.email, user.password);
 
     if (!isValid) {
       return {
-        message: 'Password is incorrect',
+        message: 'Invalid email or password',
       };
     }
 
     const payload = { username: user.username, sub: user.id };
     Logger.debug('Login user: ', payload.username);
-    return {
+    const returnUser: User = await this.usersService.findByEmail(user.email);
+
+    const result: UserResponse = {
+      user: returnUser,
       access_token: this.jwtService.sign(payload),
     };
+    return result;
   }
 
   async signIn(user: any) {
@@ -130,12 +149,13 @@ export class AuthService {
     }
 
     data.password = await hashPassword(data.password);
-    const user: User = await this.usersService.create(data);
+    let user: User = await this.usersService.create(data);
     if (!user) {
       return error('Error creating user');
     }
     const access_token = (await this.signIn(user)).access_token;
-    delete user.password;
+    user = cleanPassword(data);
+
     const result: UserResponse = { user, access_token };
     return result;
   }

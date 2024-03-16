@@ -2,8 +2,9 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import * as schema from '../drizzle/schema';
 import { DRIZZLE_ORM } from 'src/core/constants/db.constants';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
-import { eq } from 'drizzle-orm';
+import { InferSelectModel, eq } from 'drizzle-orm';
 import { CreateUserDto } from 'src/interfaces/dtos/users.interface.dto';
+import { cleanPassword } from 'src/common/utils/clean';
 
 @Injectable()
 export class UsersService {
@@ -11,45 +12,65 @@ export class UsersService {
     @Inject(DRIZZLE_ORM) private db: PostgresJsDatabase<typeof schema>,
   ) {}
 
+  // !TODO - UserSelectType does not work as expected,  we need it to be inferred from the schema, but it brings any
+
   async findAll() {
-    const data = await this.db.query.users.findMany({});
+    type UserSelectType = typeof schema.users.$inferSelect;
+    const data: UserSelectType = await this.db.query.users.findMany({});
     Logger.log('User Service', '/FindAll: ', data);
     return this.db.query.users.findMany({});
   }
 
-  async findByUsername(username: string) {
+  async findByUsername(username: string, returnPassword: boolean = false) {
     Logger.log('User Service', 'Finding User by username: ', username);
-    const data = await this.db.query.users.findFirst({
+    type UserSelectType = typeof schema.users.$inferSelect;
+    const data: UserSelectType = await this.db.query.users.findFirst({
       where: eq(schema.users.username, username),
     });
     Logger.log('User Service', 'Found User by username: ', data);
+    if (!returnPassword) {
+      return cleanPassword(data);
+    }
     return data;
   }
 
-  async findByEmail(email: string) {
+  async findByEmail(email: string, returnPassword: boolean = false) {
     Logger.log('User Service', 'Finding User by email: ', email);
-    const data = await this.db.query.users.findFirst({
+    type UserSelectType = InferSelectModel<typeof schema.users>;
+    const data: UserSelectType = await this.db.query.users.findFirst({
       where: eq(schema.users.email, email),
     });
     Logger.debug('User Service', 'Found by email: ', data);
+    if (!returnPassword) {
+      return cleanPassword(data);
+    }
     return data;
   }
 
-  async findByContactNumber(contactNumber: string) {
+  async findByContactNumber(
+    contactNumber: string,
+    returnPassword: boolean = false,
+  ) {
     Logger.debug('User Service', 'Finding User: ', contactNumber);
     const data = await this.db.query.users.findFirst({
       where: eq(schema.users.contactNumber, contactNumber),
     });
     Logger.debug('User Service', 'Found by contact number: ', data);
+    if (!returnPassword) {
+      return cleanPassword(data);
+    }
     return data;
   }
 
-  async findById(id: string) {
+  async findById(id: string, returnPassword: boolean = false) {
     Logger.log('User Service', 'Finding User: ', id);
     const data = await this.db.query.users.findFirst({
       where: eq(schema.users.id, id),
     });
     Logger.debug('User Service', 'Found by id: ', data);
+    if (!returnPassword) {
+      return cleanPassword(data);
+    }
     return data;
   }
 

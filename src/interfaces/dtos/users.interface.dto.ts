@@ -64,10 +64,10 @@ export class CreateUserDto
 
 export class LoginUserDto {
   /**
-   * The username of the user
-   * @example 'johndoe'
+   * The email of the user
+   * @example  'example@ap.com'
    */
-  username: string;
+  email: string;
   /**
    * The password of the user
    * @example 'password'
