@@ -9,7 +9,7 @@ import {
   AddUserDto,
 } from 'src/interfaces/dtos/users.interface.dto';
 import { cleanPassword } from 'src/common/utils/clean';
-import { OrganizationService } from 'src/services/profile/organization.service';
+import { OrganizationService } from 'src/services/organization/organization.service';
 
 @Injectable()
 export class AuthService {

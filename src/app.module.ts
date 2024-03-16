@@ -30,7 +30,8 @@ import { ScanService } from './services/scan/scan.service';
 import { ProfileController } from './controllers/profile/profile.controller';
 import { ProfileService } from './services/profile/profile.service';
 import { OrganizationController } from './controllers/organization/organization.controller';
-import { OrganizationService } from './services/profile/organization.service';
+import { OrganizationService } from './services/organization/organization.service';
+import { OrganizationModule } from './modules/organization/organization.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { OrganizationService } from './services/profile/organization.service';
       },
     }),
     AuthModule,
+    OrganizationModule,
   ],
   controllers: [
     AppController,

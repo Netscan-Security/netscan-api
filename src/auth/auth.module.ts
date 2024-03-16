@@ -8,6 +8,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { AuthController } from './auth.controller';
+import { OrganizationService } from 'src/services/organization/organization.service';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { AuthController } from './auth.controller';
       signOptions: { expiresIn: '2 days' },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, OrganizationService],
   exports: [AuthService],
   controllers: [AuthController],
 })
