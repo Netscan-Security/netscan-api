@@ -3,6 +3,7 @@ import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { DRIZZLE_ORM } from 'src/core/constants/db.constants';
 import * as schema from '../../modules/drizzle/schema';
 import { HostDto } from 'src/interfaces/dtos/hosts.interface.dto';
+import { eq } from 'drizzle-orm';
 
 @Injectable()
 export class HostService {
@@ -20,5 +21,11 @@ export class HostService {
       .values(data)
       .returning()
       .execute();
+  }
+
+  async findById(id: string) {
+    return this.db.query.hosts.findFirst({
+      where: eq(schema.hosts.id, id),
+    });
   }
 }
