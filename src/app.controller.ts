@@ -1,22 +1,12 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Request,
-  Query,
-  UseGuards,
-  Body,
-} from '@nestjs/common';
+import { Controller, Get, Post, Query, Body } from '@nestjs/common';
 import { AppService } from './app.service';
 // import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { UsersService } from './modules/users/users.service';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import {
   CreateUserDto,
   LoginUserDto,
 } from './interfaces/dtos/users.interface.dto';
-import { ApiBearerAuth, ApiHeader } from '@nestjs/swagger';
 
 @Controller()
 export class AppController {
@@ -55,18 +45,5 @@ export class AppController {
   @Get('health')
   getHealth(): string {
     return 'OK';
-  }
-
-  // !NOTE - This is a protected route that requires a valid JWT token, it is passed to the header as a Bearer token
-  // !NOTE - For now we can't test this on the browser with swagger, we need to use Postman or Hoppscotch
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  @ApiBearerAuth()
-  @ApiHeader({
-    name: 'Authorization: Bearer',
-    description: 'Bearer token for authentication',
-  })
-  getProfile(@Request() req) {
-    return this.userService.findByUsername(req.user.username);
   }
 }

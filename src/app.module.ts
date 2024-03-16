@@ -27,6 +27,8 @@ import { AntVirusController } from './controllers/antivirus/antivirus.controller
 import { ScanController } from './controllers/scan/scan.controller';
 import { AntiVirusService } from './services/antivirus/antivirus.service';
 import { ScanService } from './services/scan/scan.service';
+import { ProfileController } from './controllers/profile/profile.controller';
+import { ProfileService } from './services/profile/profile.service';
 
 @Module({
   imports: [
@@ -54,6 +56,7 @@ import { ScanService } from './services/scan/scan.service';
     ScanController,
     VulnerabilityController,
     HostController,
+    ProfileController,
   ],
   providers: [
     AppService,
@@ -78,6 +81,7 @@ import { ScanService } from './services/scan/scan.service';
     ScanService,
     HostService,
     AntiVirusService,
+    ProfileService,
   ],
 })
 export class AppModule {}
