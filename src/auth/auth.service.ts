@@ -42,16 +42,16 @@ export class AuthService {
     this.logger.debug('Login user: ', payload.username);
     const returnUser: User = await this.usersService.findByEmail(user.email);
 
-    const result: UserResponse = {
-      user: returnUser,
-      access_token: this.jwtService.sign(payload),
-    };
+    const access_token = (await this.signIn(returnUser)).access_token;
+    user = cleanPassword(returnUser);
+
+    const result: UserResponse = { user, access_token };
     return result;
   }
 
   async signIn(user: any) {
-    const payload = { username: user.username, sub: user.id };
-    this.logger.debug('Login user: ', payload.username);
+    const payload = { email: user.email, sub: user.id };
+    this.logger.debug('Login user: ', payload.email);
     return {
       access_token: this.jwtService.sign(payload),
     };

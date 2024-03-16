@@ -17,6 +17,6 @@ export class ProfileController {
   })
   getProfile(@Request() req) {
     Logger.log('Profile Controller', 'Getting Profile: ', req.user);
-    return this.userService.findByUsername(req.user.username);
+    return this.userService.findById(req.user.userId);
   }
 }
