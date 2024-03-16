@@ -12,6 +12,11 @@ export class ScanService {
   ) {}
 
   async create(data: CreateScanDto): Promise<any> {
+    const isScanTypeValid = await this.findScanTypeById(data.scanType);
+    if (!isScanTypeValid) {
+      throw new Error('Invalid Scan Type');
+    }
+
     const result = await this.db
       .insert(schema.scans)
       .values(data)
@@ -24,6 +29,12 @@ export class ScanService {
   async findById(id: string) {
     return this.db.query.scans.findFirst({
       where: eq(schema.scans.id, id),
+    });
+  }
+
+  async findScanTypeById(id: string) {
+    return this.db.query.scans.findFirst({
+      where: eq(schema.scans.scanType, id),
     });
   }
 
