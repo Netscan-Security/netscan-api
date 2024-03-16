@@ -1,14 +1,6 @@
 import { IsUUID, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateAntiVirusDto {
-  @IsUUID()
-  /**
-   * The id of the antivirus, must be uuid of a valid antivirus
-   * @example 'fd5c008f-a521-49a4-9727-ac44c0deaa58'
-   * @default 'uuid_generate_v4()'
-   */
-  id: string;
-
   @IsNotEmpty()
   @IsString()
   /**

@@ -1,14 +1,6 @@
-import { IsUUID, IsNotEmpty, IsString, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
 
 export class CreateVulnerabilityDto {
-  @IsUUID()
-  /**
-   * The id of the vulnerability, must be uuid of a valid vulnerability
-   * @example 'fd5c008f-a521-49a4-9727-ac44c0deaa58'
-   * @default 'uuid_generate_v4()'
-   */
-  id: string;
-
   @IsNotEmpty()
   @IsString()
   /**
