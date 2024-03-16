@@ -15,7 +15,6 @@ import { ConfigModule } from '@nestjs/config';
 import { NestDrizzleModule } from './modules/drizzle/drizzle.module';
 import { TestController } from './controllers/test/test.controller';
 import { LogsController } from './controllers/logs/logs.controller';
-import { AntVirusController } from './controllers/antivirus/antivirus.controller';
 import { VulnerabilityController } from './controllers/vulnerability/vulnerability.controller';
 import { VulnerabilityService } from './services/vulnerability/vulnerability.service';
 import { LogsService } from './services/logs/logs.service';
@@ -24,9 +23,10 @@ import { HostService } from './services/host/host.service';
 import { AuthModule } from './auth/auth.module';
 import * as schema from './modules/drizzle/schema';
 import config from 'src/config';
+import { AntVirusController } from './controllers/antivirus/antivirus.controller';
 import { ScanController } from './controllers/scan/scan.controller';
-import { ScanService } from './services/scan/scan.service';
 import { AntiVirusService } from './services/antivirus/antivirus.service';
+import { ScanService } from './services/scan/scan.service';
 
 @Module({
   imports: [
