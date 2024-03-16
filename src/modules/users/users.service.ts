@@ -48,6 +48,18 @@ export class UsersService {
     return data;
   }
 
+  async checkIfUserIsAdmin(userId: string) {
+    Logger.log('User Service', 'Checking if user is admin: ', userId);
+    const data = await this.db.query.users.findFirst({
+      where: eq(schema.users.id, userId),
+    });
+    Logger.debug('User Service', 'Found by id: ', data);
+    if (data && data.role === 'admin') {
+      return true;
+    }
+    return false;
+  }
+
   async findByContactNumber(
     contactNumber: string,
     returnPassword: boolean = false,
