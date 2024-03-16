@@ -32,6 +32,9 @@ export const users = pgTable('users', {
 export const organizations = pgTable('organizations', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: text('name').notNull(),
+  description: text('description'),
+  imageUrl: text('image_url'),
+  ownedBy: uuid('owned_by').references(() => users.id),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
@@ -96,6 +99,7 @@ export const logs = pgTable('logs', {
 export const campuses = pgTable('campuses', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: text('name').notNull(),
+  metadata: jsonb('metadata').notNull().default({}),
   organizationId: uuid('organization_id').references(() => organizations.id),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
@@ -105,6 +109,7 @@ export const campuses = pgTable('campuses', {
 export const buildings = pgTable('buildings', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: text('name').notNull(),
+  metadata: jsonb('metadata').notNull().default({}),
   campusId: uuid('campus_id').references(() => campuses.id),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
@@ -115,6 +120,7 @@ export const rooms = pgTable('rooms', {
   id: uuid('id').defaultRandom().primaryKey(),
   buildingId: uuid('building_id').references(() => buildings.id),
   name: text('name').notNull(),
+  metadata: jsonb('metadata').notNull().default({}),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });

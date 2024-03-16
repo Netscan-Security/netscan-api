@@ -9,15 +9,3 @@ import { OrganizationService } from 'src/services/organization/organization.serv
   exports: [OrganizationService],
 })
 export class OrganizationModule {}
-
-// import { Module } from '@nestjs/common';
-// import { UsersService } from './users.service';
-// import { UsersController } from './users.controller';
-
-// @Module({
-//   controllers: [UsersController],
-//   imports: [],
-//   providers: [UsersService],
-//   exports: [UsersService],
-// })
-// export class UsersModule {}
