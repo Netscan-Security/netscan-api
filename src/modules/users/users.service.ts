@@ -2,7 +2,10 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import * as schema from '../drizzle/schema';
 import { DRIZZLE_ORM } from 'src/core/constants/db.constants';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
-import { CreateUserDto } from 'src/interfaces/dtos/users.interface.dto';
+import {
+  AddUserDto,
+  CreateAdminDto,
+} from 'src/interfaces/dtos/users.interface.dto';
 import { cleanPassword } from 'src/common/utils/clean';
 import { eq } from 'drizzle-orm';
 
@@ -72,7 +75,7 @@ export class UsersService {
     return data;
   }
 
-  async create(data: CreateUserDto): Promise<any> {
+  async create(data: CreateAdminDto | AddUserDto): Promise<any> {
     const result = await this.db
       .insert(schema.users)
       .values(data)

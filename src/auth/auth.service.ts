@@ -4,7 +4,10 @@ import { comparePassword, hashPassword } from './helpers';
 import { JwtService } from '@nestjs/jwt';
 import { error } from 'console';
 import { User, UserResponse } from 'src/interfaces/tables/users.interface';
-import { CreateUserDto } from 'src/interfaces/dtos/users.interface.dto';
+import {
+  CreateAdminDto,
+  AddUserDto,
+} from 'src/interfaces/dtos/users.interface.dto';
 import { cleanPassword } from 'src/common/utils/clean';
 
 @Injectable()
@@ -13,67 +16,7 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
-
-  async validateUserWithUsername(
-    username: string,
-    password: string,
-  ): Promise<any> {
-    Logger.debug('Validating User: ', username);
-    const user = await this.usersService.findByUsername(username, true);
-    if (comparePassword(password, user.password)) {
-      delete user.password;
-
-      return user;
-    }
-    return null;
-  }
-
-  async validateUserWithEmail(email: string, password: string): Promise<any> {
-    Logger.debug('Validating User: ', email);
-    const user = await this.usersService.findByEmail(email, true);
-    if (comparePassword(password, user.password)) {
-      delete user.password;
-
-      return user;
-    }
-    return null;
-  }
-
-  async checkIfUsernameExist(username: string) {
-    Logger.debug('Checking if user exist: ', username);
-    const user = await this.usersService.findByUsername(username);
-    if (user && user !== null && user !== undefined) {
-      return true;
-    }
-    return false;
-  }
-
-  async checkIfEmailExist(email: string) {
-    Logger.debug('Checking if email exist: ', email);
-    const user = await this.usersService.findByEmail(email);
-    if (user) {
-      return true;
-    }
-    return false;
-  }
-
-  async checkIfContactNumberExist(contactNumber: string) {
-    Logger.debug('Checking if contact number exist: ', contactNumber);
-    const user = await this.usersService.findByContactNumber(contactNumber);
-    if (user) {
-      return true;
-    }
-    return false;
-  }
-
-  async checkIfUserExist(id: string) {
-    Logger.debug('Checking if user exist: ', id);
-    const user = await this.usersService.findById(id);
-    if (user) {
-      return true;
-    }
-    return false;
-  }
+  private readonly logger = new Logger(AuthService.name);
 
   async login(user: any) {
     // check if email exist
@@ -94,7 +37,7 @@ export class AuthService {
     }
 
     const payload = { username: user.username, sub: user.id };
-    Logger.debug('Login user: ', payload.username);
+    this.logger.debug('Login user: ', payload.username);
     const returnUser: User = await this.usersService.findByEmail(user.email);
 
     const result: UserResponse = {
@@ -106,14 +49,24 @@ export class AuthService {
 
   async signIn(user: any) {
     const payload = { username: user.username, sub: user.id };
-    Logger.debug('Login user: ', payload.username);
+    this.logger.debug('Login user: ', payload.username);
     return {
       access_token: this.jwtService.sign(payload),
     };
   }
 
-  async signup(data: CreateUserDto) {
-    Logger.debug('Signup data: ', data);
+  async createAdmin(data: CreateAdminDto) {
+    data.role = 'admin';
+    return this.signup(data);
+  }
+
+  async addUser(data: AddUserDto) {
+    data.role = 'user';
+    return this.signup(data);
+  }
+
+  async signup(data: CreateAdminDto | AddUserDto) {
+    this.logger.debug('Signup data: ', data);
     // check if username exist
     const userExist = await this.checkIfUsernameExist(data.username);
 
@@ -140,8 +93,10 @@ export class AuthService {
     }
 
     // if there is data.createBy, check if the user exist
-    if (data.createdBy) {
-      const createdByExist = await this.checkIfUserExist(data.createdBy);
+    if ((data as AddUserDto).createdBy ?? false) {
+      const createdByExist = await this.checkIfUserExist(
+        (data as AddUserDto).createdBy,
+      );
       if (!createdByExist) {
         return {
           message: 'User who is creating this user does not exist',
@@ -159,5 +114,66 @@ export class AuthService {
 
     const result: UserResponse = { user, access_token };
     return result;
+  }
+
+  async validateUserWithUsername(
+    username: string,
+    password: string,
+  ): Promise<any> {
+    this.logger.debug('Validating User: ', username);
+    const user = await this.usersService.findByUsername(username, true);
+    if (comparePassword(password, user.password)) {
+      delete user.password;
+
+      return user;
+    }
+    return null;
+  }
+
+  async validateUserWithEmail(email: string, password: string): Promise<any> {
+    this.logger.debug('Validating User: ', email);
+    const user = await this.usersService.findByEmail(email, true);
+    if (comparePassword(password, user.password)) {
+      delete user.password;
+
+      return user;
+    }
+    return null;
+  }
+
+  async checkIfUsernameExist(username: string) {
+    this.logger.debug('Checking if user exist: ', username);
+    const user = await this.usersService.findByUsername(username);
+    if (user && user !== null && user !== undefined) {
+      return true;
+    }
+    return false;
+  }
+
+  async checkIfEmailExist(email: string) {
+    this.logger.debug('Checking if email exist: ', email);
+    const user = await this.usersService.findByEmail(email);
+    if (user) {
+      return true;
+    }
+    return false;
+  }
+
+  async checkIfContactNumberExist(contactNumber: string) {
+    this.logger.debug('Checking if contact number exist: ', contactNumber);
+    const user = await this.usersService.findByContactNumber(contactNumber);
+    if (user) {
+      return true;
+    }
+    return false;
+  }
+
+  async checkIfUserExist(id: string) {
+    this.logger.debug('Checking if user exist: ', id);
+    const user = await this.usersService.findById(id);
+    if (user) {
+      return true;
+    }
+    return false;
   }
 }

@@ -7,18 +7,10 @@ export class User {
   contactNumber: string;
   password: string;
   imageUrl: string;
-  role: Roles;
+  role: 'admin' | 'user' | 'superAdmin';
   hasHost: boolean;
   createdAt: Date;
   updatedAt: Date;
-}
-
-// export class Roles
-// { enum: ['admin', 'user', 'superAdmin'] }
-export enum Roles {
-  Admin = 'admin',
-  User = 'user',
-  SuperAdmin = 'superAdmin',
 }
 
 export class UserResponse {

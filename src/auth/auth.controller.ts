@@ -1,7 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import {
   LoginUserDto,
-  CreateUserDto,
+  CreateAdminDto,
+  AddUserDto,
 } from 'src/interfaces/dtos/users.interface.dto';
 
 import { AuthService } from './auth.service';
@@ -16,9 +17,14 @@ export class AuthController {
     return this.authService.login(data);
   }
 
-  @Post('/signup')
-  async signup(@Body() data: CreateUserDto) {
-    return this.authService.signup(data);
+  @Post('/signup-admin')
+  async signup(@Body() data: CreateAdminDto) {
+    return this.authService.createAdmin(data);
+  }
+
+  @Post('/add-user')
+  async addUser(@Body() data: AddUserDto) {
+    return this.authService.addUser(data);
   }
 
   // !TODO - Implement logout
