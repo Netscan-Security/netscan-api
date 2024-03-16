@@ -42,7 +42,7 @@ export class AuthService {
   async checkIfUsernameExist(username: string) {
     Logger.debug('Checking if user exist: ', username);
     const user = await this.usersService.findByUsername(username);
-    if (user) {
+    if (user && user !== null && user !== undefined) {
       return true;
     }
     return false;
@@ -113,9 +113,10 @@ export class AuthService {
   }
 
   async signup(data: CreateUserDto) {
-    Logger.debug('Signing up user: ', data.username);
+    Logger.debug('Signup data: ', data);
     // check if username exist
     const userExist = await this.checkIfUsernameExist(data.username);
+
     if (userExist) {
       return {
         message: 'Username already exist',

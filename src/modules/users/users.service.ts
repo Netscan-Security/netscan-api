@@ -2,9 +2,9 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import * as schema from '../drizzle/schema';
 import { DRIZZLE_ORM } from 'src/core/constants/db.constants';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
-import { InferSelectModel, eq } from 'drizzle-orm';
 import { CreateUserDto } from 'src/interfaces/dtos/users.interface.dto';
 import { cleanPassword } from 'src/common/utils/clean';
+import { eq } from 'drizzle-orm';
 
 @Injectable()
 export class UsersService {
@@ -15,20 +15,18 @@ export class UsersService {
   // !TODO - UserSelectType does not work as expected,  we need it to be inferred from the schema, but it brings any
 
   async findAll() {
-    type UserSelectType = typeof schema.users.$inferSelect;
-    const data: UserSelectType = await this.db.query.users.findMany({});
+    const data = await this.db.query.users.findMany({});
     Logger.log('User Service', '/FindAll: ', data);
     return this.db.query.users.findMany({});
   }
 
   async findByUsername(username: string, returnPassword: boolean = false) {
     Logger.log('User Service', 'Finding User by username: ', username);
-    type UserSelectType = typeof schema.users.$inferSelect;
-    const data: UserSelectType = await this.db.query.users.findFirst({
+    const data = await this.db.query.users.findFirst({
       where: eq(schema.users.username, username),
     });
-    Logger.log('User Service', 'Found User by username: ', data);
-    if (!returnPassword) {
+    Logger.log('User Service', 'Found User by username: ', { data });
+    if (!returnPassword && data) {
       return cleanPassword(data);
     }
     return data;
@@ -36,12 +34,12 @@ export class UsersService {
 
   async findByEmail(email: string, returnPassword: boolean = false) {
     Logger.log('User Service', 'Finding User by email: ', email);
-    type UserSelectType = InferSelectModel<typeof schema.users>;
-    const data: UserSelectType = await this.db.query.users.findFirst({
+
+    const data = await this.db.query.users.findFirst({
       where: eq(schema.users.email, email),
     });
     Logger.debug('User Service', 'Found by email: ', data);
-    if (!returnPassword) {
+    if (!returnPassword && data) {
       return cleanPassword(data);
     }
     return data;
@@ -56,7 +54,7 @@ export class UsersService {
       where: eq(schema.users.contactNumber, contactNumber),
     });
     Logger.debug('User Service', 'Found by contact number: ', data);
-    if (!returnPassword) {
+    if (!returnPassword && data) {
       return cleanPassword(data);
     }
     return data;
@@ -68,7 +66,7 @@ export class UsersService {
       where: eq(schema.users.id, id),
     });
     Logger.debug('User Service', 'Found by id: ', data);
-    if (!returnPassword) {
+    if (!returnPassword && data) {
       return cleanPassword(data);
     }
     return data;
