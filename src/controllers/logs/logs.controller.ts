@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { FindOneParams } from 'src/interfaces/dtos/general.interface.dto';
 import { CreateLogDto } from 'src/interfaces/dtos/logs.interface.dto';
 import { LogsService } from 'src/services/logs/logs.service';
 
@@ -9,6 +10,12 @@ export class LogsController {
   @Get()
   viewLogs() {
     return this.logsService.findAll();
+  }
+
+  // get log by id
+  @Get(':id')
+  findOne(@Param() params: FindOneParams): Promise<any> {
+    return this.logsService.findById(params.id);
   }
 
   @Post('application/receive')
@@ -22,4 +29,5 @@ export class LogsController {
   //   this.logsService.create(secLogs);
   //   return 'Thanks for the logs!';
   // }
+  // @msec i removed the security logs endpoint because we can just use the same endpoint for all logs types
 }

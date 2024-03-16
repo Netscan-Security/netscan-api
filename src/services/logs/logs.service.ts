@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { DRIZZLE_ORM } from 'src/core/constants/db.constants';
 import * as schema from '../../modules/drizzle/schema';
-import { CreateLogDto } from 'src/interfaces/dtos/CreateLogDto.interface.dto';
 import { eq } from 'drizzle-orm';
+import { CreateLogDto } from 'src/interfaces/dtos/logs.interface.dto';
 
 @Injectable()
 export class LogsService {
@@ -19,6 +19,13 @@ export class LogsService {
       .execute();
 
     return result[0];
+  }
+
+  // get log by id
+  async findById(id: string) {
+    return this.db.query.logs.findFirst({
+      where: eq(schema.logs.id, id),
+    });
   }
 
   async findAll() {
