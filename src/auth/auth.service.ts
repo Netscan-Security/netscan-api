@@ -9,12 +9,14 @@ import {
   AddUserDto,
 } from 'src/interfaces/dtos/users.interface.dto';
 import { cleanPassword } from 'src/common/utils/clean';
+import { OrganizationService } from 'src/services/profile/organization.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private organizationService: OrganizationService,
   ) {}
   private readonly logger = new Logger(AuthService.name);
 
@@ -100,6 +102,19 @@ export class AuthService {
       if (!createdByExist) {
         return {
           message: 'User who is creating this user does not exist',
+        };
+      }
+    }
+
+    // if we have roomId, check if the room exist
+    if ((data as AddUserDto).roomId ?? false) {
+      const roomExist = await this.organizationService.checkIfRoomExistById(
+        (data as AddUserDto).roomId,
+      );
+      // !TODO - check if the room is active & ig the admin has organization which has the room
+      if (!roomExist) {
+        return {
+          message: 'Room does not exist',
         };
       }
     }

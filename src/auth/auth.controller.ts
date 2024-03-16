@@ -19,6 +19,7 @@ export class AuthController {
 
   @Post('/signup-admin')
   async signup(@Body() data: CreateAdminDto) {
+    data.role = 'admin';
     return this.authService.createAdmin(data);
   }
 

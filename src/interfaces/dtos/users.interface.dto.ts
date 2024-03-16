@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsUUID } from 'class-validator';
 import { User } from '../tables/users.interface';
 
 export class LoginUserDto {
@@ -39,6 +39,13 @@ export class AddUserDto {
    * @example  'example@example.app'
    */
   email: string;
+  // roomId
+  /**
+   * The room id of the user, it must be a uuid and a valid room id
+   * @example '123e4567-e89b-12d3-a456-426614174000'
+   */
+  @IsUUID()
+  roomId: string;
   /**
    * The contact number of the user
    * @example '1234567890'

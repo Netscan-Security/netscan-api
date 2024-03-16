@@ -22,6 +22,7 @@ export const users = pgTable('users', {
     .notNull()
     .default('user'),
   createdBy: uuid('created_by').references(() => users.id),
+  roomId: uuid('room_id').references(() => rooms.id),
   hasHost: boolean('has_host').notNull().default(false),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
