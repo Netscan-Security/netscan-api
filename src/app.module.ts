@@ -36,6 +36,8 @@ import { CampusController } from './controllers/campus/campus.controller';
 import { CampusService } from './services/campus/campus.service';
 import { BuildingController } from './controllers/building/building.controller';
 import { BuildingService } from './services/building/building.service';
+import { RoomController } from './controllers/room/room.controller';
+import { RoomService } from './services/room/room.service';
 
 @Module({
   imports: [
@@ -68,6 +70,7 @@ import { BuildingService } from './services/building/building.service';
     OrganizationController,
     CampusController,
     BuildingController,
+    RoomController,
   ],
   providers: [
     AppService,
@@ -96,6 +99,7 @@ import { BuildingService } from './services/building/building.service';
     OrganizationService,
     CampusService,
     BuildingService,
+    RoomService,
   ],
 })
 export class AppModule {}
