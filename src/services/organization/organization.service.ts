@@ -15,6 +15,17 @@ export class OrganizationService {
   ) {}
   private readonly logger = new Logger(OrganizationService.name);
 
+  async findAll() {
+    return this.db.query.organizations.findMany();
+  }
+
+  // findUserOrganizations
+  async findUserOrganizations(userId: string) {
+    return this.db.query.organizations.findMany({
+      where: eq(schema.organizations.ownedBy, userId),
+    });
+  }
+
   async checkIfRoomExistById(id: string) {
     const room = await this.db.query.rooms.findFirst({
       where: eq(schema.rooms.id, id),

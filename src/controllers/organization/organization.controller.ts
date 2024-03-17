@@ -56,4 +56,15 @@ export class OrganizationController {
     Logger.log('Organization Controller', 'Deleting Organization: ', id);
     return this.organizationsService.remove(id);
   }
+
+  @Get('ownedBy/:id')
+  findUserOrganizations(@Param('id') id: string) {
+    Logger.log('Organization Controller', 'Finding User Organizations: ', id);
+    return this.organizationsService.findUserOrganizations(id);
+  }
+
+  @Get()
+  findAll() {
+    return this.organizationsService.findAll();
+  }
 }
