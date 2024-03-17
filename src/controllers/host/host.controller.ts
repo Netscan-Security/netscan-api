@@ -29,9 +29,9 @@ export class HostController {
   async registerHost(@Body() data: HostDto) {
     this.logger.debug(`${JSON.stringify(data)}`);
 
-    const room = await this.hostService.create(data);
+    const host = await this.hostService.create(data);
 
-    this.logger.debug('registered Host data: ', room);
+    this.logger.debug('registered Host data: ', host);
 
     let user = await this.usersService.assignUserToHost(
       data.userId,
@@ -41,7 +41,7 @@ export class HostController {
     user = cleanPassword(user);
 
     this.logger.debug('assignUserToHost data: ', user);
-    return { room, user };
+    return { host, user };
   }
 
   @Get(':id')
