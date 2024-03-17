@@ -38,6 +38,7 @@ import { BuildingController } from './controllers/building/building.controller';
 import { BuildingService } from './services/building/building.service';
 import { RoomController } from './controllers/room/room.controller';
 import { RoomService } from './services/room/room.service';
+import { HostModule } from './modules/host/host.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { RoomService } from './services/room/room.service';
     }),
     AuthModule,
     OrganizationModule,
+    HostModule,
   ],
   controllers: [
     AppController,

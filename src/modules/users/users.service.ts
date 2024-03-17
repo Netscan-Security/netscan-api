@@ -89,6 +89,20 @@ export class UsersService {
     return data;
   }
 
+  // updateUserHasHost
+  async updateUserHasHost(userId: string, hasHost: boolean) {
+    this.logger.debug('Updating User hasHost: ', userId);
+    const result = await this.db
+      .update(schema.users)
+      .set({ hasHost })
+      .where(eq(schema.users.id, userId))
+      .returning()
+      .execute();
+
+    this.logger.debug('Updated User hasHost: ', result);
+    return result[0];
+  }
+
   async create(data: CreateAdminDto | AddUserDto): Promise<any> {
     this.logger.debug('Creating User: ', data);
     const result = await this.db

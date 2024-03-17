@@ -13,17 +13,23 @@ import {
   HostDto,
   UpdateHostDto,
 } from 'src/interfaces/dtos/hosts.interface.dto';
+import { UsersService } from 'src/modules/users/users.service';
 import { HostService } from 'src/services/host/host.service';
 
 @Controller('host')
 export class HostController {
-  constructor(private readonly hostService: HostService) {}
+  constructor(
+    private readonly hostService: HostService,
+    private readonly usersService: UsersService,
+  ) {}
   private readonly logger = new Logger(HostController.name);
 
   @Post('register')
   registerHost(@Body() data: HostDto) {
     this.logger.debug(`${JSON.stringify(data)}`);
-    return this.hostService.create(data);
+    const host = this.hostService.create(data);
+    const user = this.usersService.updateUserHasHost(data.userId, true);
+    return { host, user };
   }
 
   @Get(':id')
