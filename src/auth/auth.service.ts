@@ -1,8 +1,7 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/modules/users/users.service';
 import { comparePassword, hashPassword } from './helpers';
 import { JwtService } from '@nestjs/jwt';
-import { error } from 'console';
 import { User, UserResponse } from 'src/interfaces/tables/users.interface';
 import {
   CreateAdminDto,
@@ -24,18 +23,14 @@ export class AuthService {
     // check if email exist
     const userExist = await this.checkIfEmailExist(user.email);
     if (!userExist) {
-      return {
-        message: 'Invalid email or password',
-      };
+      throw new UnauthorizedException('Invalid email or password');
     }
 
     // validate the user
     const isValid = await this.validateUserWithEmail(user.email, user.password);
 
     if (!isValid) {
-      return {
-        message: 'Invalid email or password',
-      };
+      throw new UnauthorizedException('Invalid email or password');
     }
 
     const payload = { username: user.username, sub: user.id };
@@ -73,25 +68,19 @@ export class AuthService {
     const userExist = await this.checkIfUsernameExist(data.username);
 
     if (userExist) {
-      return {
-        message: 'Username already exist',
-      };
+      throw new Error('Username already exist');
     }
 
     const emailExist = await this.usersService.findByEmail(data.email);
     if (emailExist) {
-      return {
-        message: 'Email already exist',
-      };
+      throw new Error('Email already exist');
     }
 
     const contactNumberExist = await this.usersService.findByContactNumber(
       data.contactNumber,
     );
     if (contactNumberExist) {
-      return {
-        message: 'Contact number already exist',
-      };
+      throw new Error('Contact number already exist');
     }
 
     // if there is data.createBy, check if the user exist
@@ -100,9 +89,7 @@ export class AuthService {
         (data as AddUserDto).createdBy,
       );
       if (!createdByExist) {
-        return {
-          message: 'User who is creating this user does not exist',
-        };
+        throw new Error('User who is creating this user does not exist');
       }
     }
 
@@ -113,16 +100,14 @@ export class AuthService {
       );
       // !TODO - check if the room is active & ig the admin has organization which has the room
       if (!roomExist) {
-        return {
-          message: 'Room does not exist',
-        };
+        throw new Error('Room does not exist');
       }
     }
 
     data.password = await hashPassword(data.password);
     let user: User = await this.usersService.create(data);
     if (!user) {
-      return error('Error creating user');
+      throw new Error('Error creating user');
     }
     const access_token = (await this.signIn(user)).access_token;
     user = cleanPassword(user);
