@@ -6,20 +6,27 @@ import { LogsService } from 'src/services/logs/logs.service';
 @Controller('logs')
 export class LogsController {
   constructor(private readonly logsService: LogsService) {}
+  private readonly logger = new Logger(LogsController.name);
 
   @Get()
   viewLogs() {
+    this.logger.debug('Viewing Logs');
     return this.logsService.findAll();
   }
 
   // get log by id
   @Get(':id')
   findOne(@Param() params: FindOneParams): Promise<any> {
+    this.logger.debug('Finding Log: ', params.id);
     return this.logsService.findById(params.id);
   }
 
   @Post('application/receive')
   postApplicationLogs(@Body() appLogs: CreateLogDto) {
+    this.logger.debug(
+      'Registering Application Log',
+      `${JSON.stringify(appLogs)}`,
+    );
     return this.logsService.create(appLogs);
   }
 

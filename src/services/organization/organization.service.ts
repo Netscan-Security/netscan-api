@@ -45,7 +45,7 @@ export class OrganizationService {
       .returning()
       .execute();
 
-    Logger.debug('Organization Service', 'Updated Organization: ', result);
+    Logger.debug('Updated Organization: ', result);
     return result[0];
   }
 
@@ -57,7 +57,7 @@ export class OrganizationService {
       .returning()
       .execute();
 
-    Logger.debug('Organization Service', 'Deleted Organization: ', result);
+    Logger.debug('Deleted Organization: ', result);
     return result[0];
   }
 
@@ -76,6 +76,8 @@ export class OrganizationService {
         .returning()
         .execute();
 
+      this.logger.debug('Created Organization: ', newOrganization);
+
       // Create campus
       const [newCampus] = await tx
         .insert(schema.campuses)
@@ -86,6 +88,8 @@ export class OrganizationService {
         })
         .returning()
         .execute();
+
+      this.logger.debug('Created Campus: ', newCampus);
 
       // Create building
       const [newBuilding] = await tx
@@ -98,6 +102,8 @@ export class OrganizationService {
         .returning()
         .execute();
 
+      this.logger.debug('Created Building: ', newBuilding);
+
       // Create room
       const [newRoom] = await tx
         .insert(schema.rooms)
@@ -108,6 +114,10 @@ export class OrganizationService {
         })
         .returning()
         .execute();
+
+      this.logger.debug('Created Room: ', newRoom);
+
+      this.logger.debug('Organization Onboarding Completed 🥳');
 
       return {
         organizationId: newOrganization.id,

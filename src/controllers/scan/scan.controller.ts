@@ -6,16 +6,17 @@ import { ScanService } from 'src/services/scan/scan.service';
 @Controller('scan')
 export class ScanController {
   constructor(private readonly scanService: ScanService) {}
+  private readonly logger = new Logger(ScanController.name);
 
   @Post('register')
   registerScan(@Body() data: CreateScanDto) {
-    Logger.log('Registering Scan', `${JSON.stringify(data)}`);
+    this.logger.debug('Registering Scan', `${JSON.stringify(data)}`);
     return this.scanService.create(data);
   }
 
   @Get(':id')
   findOne(@Param() params: FindOneParams): Promise<any> {
-    Logger.log('Scan Controller', 'Finding Scan: ', params.id);
+    this.logger.debug('Scan Controller', 'Finding Scan: ', params.id);
     return this.scanService.findById(params.id);
   }
 
