@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Logger } from '@nestjs/common';
 import { FindOneParams } from 'src/interfaces/dtos/general.interface.dto';
 import { CreateLogDto } from 'src/interfaces/dtos/logs.interface.dto';
 import { LogsService } from 'src/services/logs/logs.service';
