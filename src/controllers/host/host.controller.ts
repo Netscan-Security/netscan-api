@@ -8,6 +8,7 @@ import {
   Delete,
   Put,
 } from '@nestjs/common';
+import { cleanPassword } from 'src/common/utils/clean';
 import { FindOneParams } from 'src/interfaces/dtos/general.interface.dto';
 import {
   HostDto,
@@ -25,11 +26,22 @@ export class HostController {
   private readonly logger = new Logger(HostController.name);
 
   @Post('register')
-  registerHost(@Body() data: HostDto) {
+  async registerHost(@Body() data: HostDto) {
     this.logger.debug(`${JSON.stringify(data)}`);
-    const host = this.hostService.create(data);
-    const user = this.usersService.updateUserHasHost(data.userId, true);
-    return { host, user };
+
+    const room = await this.hostService.create(data);
+
+    this.logger.debug('registered Host data: ', room);
+
+    let user = await this.usersService.assignUserToHost(
+      data.userId,
+      data.roomId,
+      true,
+    );
+    user = cleanPassword(user);
+
+    this.logger.debug('assignUserToHost data: ', user);
+    return { room, user };
   }
 
   @Get(':id')

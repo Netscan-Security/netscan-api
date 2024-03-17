@@ -20,11 +20,13 @@ export class HostService {
   }
 
   async create(data: HostDto) {
-    return await this.db
+    const result = await this.db
       .insert(schema.hosts)
       .values(data)
       .returning()
       .execute();
+
+    return result[0];
   }
 
   async findById(id: string) {

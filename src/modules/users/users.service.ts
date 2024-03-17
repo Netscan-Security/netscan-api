@@ -90,11 +90,11 @@ export class UsersService {
   }
 
   // updateUserHasHost
-  async updateUserHasHost(userId: string, hasHost: boolean) {
+  async assignUserToHost(userId: string, roomId: string, hasHost: boolean) {
     this.logger.debug('Updating User hasHost: ', userId);
     const result = await this.db
       .update(schema.users)
-      .set({ hasHost })
+      .set({ hasHost, roomId })
       .where(eq(schema.users.id, userId))
       .returning()
       .execute();
