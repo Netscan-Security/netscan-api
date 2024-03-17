@@ -1,15 +1,20 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { DRIZZLE_ORM } from 'src/core/constants/db.constants';
 import * as schema from '../../modules/drizzle/schema';
 import { eq } from 'drizzle-orm';
-import { CreateOrganizationDto } from 'src/interfaces/dtos/organization.interface.dto';
+import {
+  CreateOrganizationDto,
+  UpdateOrganizationDto,
+} from 'src/interfaces/dtos/organization.interface.dto';
 
 @Injectable()
 export class OrganizationService {
   constructor(
     @Inject(DRIZZLE_ORM) private db: PostgresJsDatabase<typeof schema>,
   ) {}
+  private readonly logger = new Logger(OrganizationService.name);
+
   async checkIfRoomExistById(id: string) {
     const room = await this.db.query.rooms.findFirst({
       where: eq(schema.rooms.id, id),
@@ -22,7 +27,42 @@ export class OrganizationService {
     return true;
   }
 
+  async findById(id: string) {
+    return this.db.query.organizations.findFirst({
+      where: eq(schema.organizations.id, id),
+    });
+  }
+
+  async update(
+    id: string,
+    updateOrganizationDto: UpdateOrganizationDto,
+  ): Promise<any> {
+    this.logger.debug('Updating Organization: ', updateOrganizationDto);
+    const result = await this.db
+      .update(schema.organizations)
+      .set(updateOrganizationDto)
+      .where(eq(schema.organizations.id, id))
+      .returning()
+      .execute();
+
+    Logger.debug('Organization Service', 'Updated Organization: ', result);
+    return result[0];
+  }
+
+  async remove(id: string): Promise<any> {
+    this.logger.debug('Deleting Organization: ', id);
+    const result = await this.db
+      .delete(schema.organizations)
+      .where(eq(schema.organizations.id, id))
+      .returning()
+      .execute();
+
+    Logger.debug('Organization Service', 'Deleted Organization: ', result);
+    return result[0];
+  }
+
   async onBoardOrganization(organization: CreateOrganizationDto) {
+    this.logger.debug('Onboarding Organization: ', organization);
     return await this.db.transaction(async (tx) => {
       // Create organization
       const [newOrganization] = await tx
