@@ -21,7 +21,15 @@ export class CampusService {
     return result[0];
   }
 
-  // findAll
+  // check if campus exist
+  async checkIfCampusExistById(id: string): Promise<any> {
+    const compus = this.findById(id);
+    if (!compus) {
+      return false;
+    }
+    return true;
+  }
+
   async findAll(): Promise<any> {
     return this.db.query.campuses.findMany({});
   }
@@ -47,7 +55,7 @@ export class CampusService {
     return result[0];
   }
 
-  async checkById(id: string): Promise<any> {
+  async findById(id: string): Promise<any> {
     return this.db.query.campuses.findFirst({
       where: eq(schema.campuses.id, id),
     });

@@ -25,7 +25,7 @@ export class CampusController {
   @Get(':id')
   findOne(@Param() params: FindOneParams): Promise<any> {
     this.logger.debug(`findOne: ${params.id}`);
-    return this.campusService.checkById(params.id);
+    return this.campusService.findById(params.id);
   }
 
   @Post()
