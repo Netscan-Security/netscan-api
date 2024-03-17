@@ -125,7 +125,7 @@ export class AuthService {
       return error('Error creating user');
     }
     const access_token = (await this.signIn(user)).access_token;
-    user = cleanPassword(data);
+    user = cleanPassword(user);
 
     const result: UserResponse = { user, access_token };
     return result;
