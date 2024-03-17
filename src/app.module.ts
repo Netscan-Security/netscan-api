@@ -23,7 +23,7 @@ import { HostService } from './services/host/host.service';
 import { AuthModule } from './auth/auth.module';
 import * as schema from './modules/drizzle/schema';
 import config from 'src/config';
-import { AntVirusController } from './controllers/antivirus/antivirus.controller';
+import { AntivirusController } from './controllers/antivirus/antivirus.controller';
 import { ScanController } from './controllers/scan/scan.controller';
 import { AntiVirusService } from './services/antivirus/antivirus.service';
 import { ScanService } from './services/scan/scan.service';
@@ -62,7 +62,7 @@ import { RoomService } from './services/room/room.service';
     AppController,
     TestController,
     LogsController,
-    AntVirusController,
+    AntivirusController,
     ScanController,
     VulnerabilityController,
     HostController,
