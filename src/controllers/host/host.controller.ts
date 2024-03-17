@@ -29,6 +29,12 @@ export class HostController {
   async registerHost(@Body() data: HostDto) {
     this.logger.debug(`${JSON.stringify(data)}`);
 
+    // check if user has hasHost true
+    const userHostCheck = await this.usersService.findById(data.userId);
+    if (userHostCheck.hasHost) {
+      throw new Error('User has no host');
+    }
+
     const host = await this.hostService.create(data);
 
     this.logger.debug('registered Host data: ', host);
