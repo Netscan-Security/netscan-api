@@ -5,6 +5,7 @@ import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import {
   AddUserDto,
   CreateAdminDto,
+  UpdateUserDto,
 } from 'src/interfaces/dtos/users.interface.dto';
 import { cleanPassword } from 'src/common/utils/clean';
 import { eq } from 'drizzle-orm';
@@ -14,21 +15,22 @@ export class UsersService {
   constructor(
     @Inject(DRIZZLE_ORM) private db: PostgresJsDatabase<typeof schema>,
   ) {}
+  private readonly logger = new Logger(UsersService.name);
 
   // !TODO - UserSelectType does not work as expected,  we need it to be inferred from the schema, but it brings any
 
   async findAll() {
     const data = await this.db.query.users.findMany({});
-    Logger.log('User Service', '/FindAll: ', data);
+    this.logger.debug('/FindAll: ', data);
     return this.db.query.users.findMany({});
   }
 
   async findByUsername(username: string, returnPassword: boolean = false) {
-    Logger.log('User Service', 'Finding User by username: ', username);
+    this.logger.debug('Finding User by username: ', username);
     const data = await this.db.query.users.findFirst({
       where: eq(schema.users.username, username),
     });
-    Logger.log('User Service', 'Found User by username: ', { data });
+    this.logger.debug('Found User by username: ', { data });
     if (!returnPassword && data) {
       return cleanPassword(data);
     }
@@ -36,12 +38,12 @@ export class UsersService {
   }
 
   async findByEmail(email: string, returnPassword: boolean = false) {
-    Logger.log('User Service', 'Finding User by email: ', email);
+    this.logger.debug('Finding User by email: ', email);
 
     const data = await this.db.query.users.findFirst({
       where: eq(schema.users.email, email),
     });
-    Logger.debug('User Service', 'Found by email: ', data);
+    this.logger.debug('User Service', 'Found by email: ', data);
     if (!returnPassword && data) {
       return cleanPassword(data);
     }
@@ -49,11 +51,11 @@ export class UsersService {
   }
 
   async checkIfUserIsAdmin(userId: string) {
-    Logger.log('User Service', 'Checking if user is admin: ', userId);
+    this.logger.debug('Checking if user is admin: ', userId);
     const data = await this.db.query.users.findFirst({
       where: eq(schema.users.id, userId),
     });
-    Logger.debug('User Service', 'Found by id: ', data);
+    this.logger.debug('User Service', 'Found by id: ', data);
     if (data && data.role === 'admin') {
       return true;
     }
@@ -64,11 +66,11 @@ export class UsersService {
     contactNumber: string,
     returnPassword: boolean = false,
   ) {
-    Logger.debug('User Service', 'Finding User: ', contactNumber);
+    this.logger.debug('User Service', 'Finding User: ', contactNumber);
     const data = await this.db.query.users.findFirst({
       where: eq(schema.users.contactNumber, contactNumber),
     });
-    Logger.debug('User Service', 'Found by contact number: ', data);
+    this.logger.debug('User Service', 'Found by contact number: ', data);
     if (!returnPassword && data) {
       return cleanPassword(data);
     }
@@ -76,11 +78,11 @@ export class UsersService {
   }
 
   async findById(id: string, returnPassword: boolean = false) {
-    Logger.log('User Service', 'Finding User: ', id);
+    this.logger.debug('Finding User: ', id);
     const data = await this.db.query.users.findFirst({
       where: eq(schema.users.id, id),
     });
-    Logger.debug('User Service', 'Found by id: ', data);
+    this.logger.debug('User Service', 'Found by id: ', data);
     if (!returnPassword && data) {
       return cleanPassword(data);
     }
@@ -93,7 +95,30 @@ export class UsersService {
       .values(data)
       .returning()
       .execute();
-    Logger.debug('User Service', 'Created User: ', result);
+    this.logger.debug('User Service', 'Created User: ', result);
+    return result[0];
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<any> {
+    const result = await this.db
+      .update(schema.users)
+      .set(updateUserDto)
+      .where(eq(schema.users.id, id))
+      .returning()
+      .execute();
+
+    this.logger.debug('User Service', 'Updated User: ', result);
+    return result[0];
+  }
+
+  async remove(id: string): Promise<any> {
+    const result = await this.db
+      .delete(schema.users)
+      .where(eq(schema.users.id, id))
+      .returning()
+      .execute();
+
+    this.logger.debug('User Service', 'Deleted User: ', result);
     return result[0];
   }
 }

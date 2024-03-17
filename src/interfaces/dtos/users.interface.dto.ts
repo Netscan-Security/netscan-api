@@ -1,4 +1,10 @@
-import { IsEmail, IsNotEmpty, IsUUID } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 import { User } from '../tables/users.interface';
 
 export class LoginUserDto {
@@ -148,4 +154,48 @@ export class CreateAdminDto
    * The created at date of the user
    * @example '2021-01-01T00:00:00Z'
    */
+}
+
+export class UpdateUserDto {
+  @IsOptional()
+  @IsString()
+  /**
+   * The first name of the user
+   * @example 'John'
+   */
+  firstName?: string;
+
+  @IsOptional()
+  @IsString()
+  /**
+   * The last name of the user
+   * @example 'Doe'
+   */
+  lastName?: string;
+
+  @IsOptional()
+  @IsString()
+  /**
+   * The username of the user
+   * This field must be unique
+   * @example 'johndoe'
+   */
+  username?: string;
+
+  @IsOptional()
+  @IsEmail()
+  /**
+   * The email of the user
+   * This field must be a valid email and unique
+   * @example  'example@example.app'
+   */
+  email?: string;
+
+  @IsOptional()
+  @IsUUID()
+  /**
+   * The room id of the user, it must be a uuid and a valid room id
+   * @example '123e4567-e89b-12d3-a456-426614174000'
+   */
+  roomId?: string;
 }
