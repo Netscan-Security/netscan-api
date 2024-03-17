@@ -32,7 +32,7 @@ export class HostController {
     // check if user has hasHost true
     const userHostCheck = await this.usersService.findById(data.userId);
     if (userHostCheck.hasHost) {
-      throw new Error('User has no host');
+      throw new Error('User already has a host');
     }
 
     const host = await this.hostService.create(data);
