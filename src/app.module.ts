@@ -32,6 +32,8 @@ import { ProfileService } from './services/profile/profile.service';
 import { OrganizationController } from './controllers/organization/organization.controller';
 import { OrganizationService } from './services/organization/organization.service';
 import { OrganizationModule } from './modules/organization/organization.module';
+import { CampusController } from './controllers/campus/campus.controller';
+import { CampusService } from './services/campus/campus.service';
 
 @Module({
   imports: [
@@ -62,6 +64,7 @@ import { OrganizationModule } from './modules/organization/organization.module';
     HostController,
     ProfileController,
     OrganizationController,
+    CampusController,
   ],
   providers: [
     AppService,
@@ -88,6 +91,7 @@ import { OrganizationModule } from './modules/organization/organization.module';
     AntiVirusService,
     ProfileService,
     OrganizationService,
+    CampusService,
   ],
 })
 export class AppModule {}
