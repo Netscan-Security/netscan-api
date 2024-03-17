@@ -43,7 +43,7 @@ export class UsersService {
     const data = await this.db.query.users.findFirst({
       where: eq(schema.users.email, email),
     });
-    this.logger.debug('User Service', 'Found by email: ', data);
+    this.logger.debug('Found by email: ', data);
     if (!returnPassword && data) {
       return cleanPassword(data);
     }
@@ -55,7 +55,7 @@ export class UsersService {
     const data = await this.db.query.users.findFirst({
       where: eq(schema.users.id, userId),
     });
-    this.logger.debug('User Service', 'Found by id: ', data);
+    this.logger.debug('Found by id: ', data);
     if (data && data.role === 'admin') {
       return true;
     }
@@ -66,11 +66,11 @@ export class UsersService {
     contactNumber: string,
     returnPassword: boolean = false,
   ) {
-    this.logger.debug('User Service', 'Finding User: ', contactNumber);
+    this.logger.debug('Finding User: ', contactNumber);
     const data = await this.db.query.users.findFirst({
       where: eq(schema.users.contactNumber, contactNumber),
     });
-    this.logger.debug('User Service', 'Found by contact number: ', data);
+    this.logger.debug('Found by contact number: ', data);
     if (!returnPassword && data) {
       return cleanPassword(data);
     }
@@ -82,7 +82,7 @@ export class UsersService {
     const data = await this.db.query.users.findFirst({
       where: eq(schema.users.id, id),
     });
-    this.logger.debug('User Service', 'Found by id: ', data);
+    this.logger.debug('Found by id: ', data);
     if (!returnPassword && data) {
       return cleanPassword(data);
     }
@@ -90,12 +90,13 @@ export class UsersService {
   }
 
   async create(data: CreateAdminDto | AddUserDto): Promise<any> {
+    this.logger.debug('Creating User: ', data);
     const result = await this.db
       .insert(schema.users)
       .values(data)
       .returning()
       .execute();
-    this.logger.debug('User Service', 'Created User: ', result);
+    this.logger.debug('Created User: ', result);
     return result[0];
   }
 
@@ -107,7 +108,7 @@ export class UsersService {
       .returning()
       .execute();
 
-    this.logger.debug('User Service', 'Updated User: ', result);
+    this.logger.debug('Updated User: ', result);
     return result[0];
   }
 
@@ -118,7 +119,7 @@ export class UsersService {
       .returning()
       .execute();
 
-    this.logger.debug('User Service', 'Deleted User: ', result);
+    this.logger.debug('Deleted User: ', result);
     return result[0];
   }
 }
