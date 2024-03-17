@@ -1,6 +1,18 @@
-import { Controller, Get, Post, Body, Param, Logger } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Logger,
+  Delete,
+  Put,
+} from '@nestjs/common';
 import { FindOneParams } from 'src/interfaces/dtos/general.interface.dto';
-import { CreateLogDto } from 'src/interfaces/dtos/logs.interface.dto';
+import {
+  CreateLogDto,
+  UpdateLogDto,
+} from 'src/interfaces/dtos/logs.interface.dto';
 import { LogsService } from 'src/services/logs/logs.service';
 
 @Controller('logs')
@@ -28,6 +40,18 @@ export class LogsController {
       `${JSON.stringify(appLogs)}`,
     );
     return this.logsService.create(appLogs);
+  }
+
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateLogDto: UpdateLogDto) {
+    Logger.log('Logs Controller', 'Updating Log: ', id);
+    return this.logsService.update(id, updateLogDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    Logger.log('Logs Controller', 'Deleting Log: ', id);
+    return this.logsService.remove(id);
   }
 
   // @Post('security/receive')
