@@ -134,6 +134,34 @@
       "when": 1710276350434,
       "tag": "0018_steep_blue_blade",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "5",
+      "when": 1710611886961,
+      "tag": "0019_little_hercules",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "5",
+      "when": 1710625902685,
+      "tag": "0020_daffy_santa_claus",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "5",
+      "when": 1710626011626,
+      "tag": "0021_wealthy_living_mummy",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "5",
+      "when": 1710626609501,
+      "tag": "0022_dear_professor_monster",
+      "breakpoints": true
     }
   ]
 }

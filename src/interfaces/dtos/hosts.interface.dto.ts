@@ -1,3 +1,4 @@
+import { IsOptional, IsString, IsUUID } from 'class-validator';
 import { Host } from '../tables/hosts.interface';
 
 export class HostDto implements Omit<Host, 'id' | 'createdAt' | 'updatedAt'> {
@@ -56,4 +57,46 @@ export class HostDto implements Omit<Host, 'id' | 'createdAt' | 'updatedAt'> {
    * @example '23.233.3232.'
    */
   ipAddress: string;
+}
+
+export class UpdateHostDto {
+  @IsOptional()
+  @IsString()
+  /**
+   * A name for the host
+   * @example 'Updated Host1'
+   */
+  name?: string;
+
+  @IsOptional()
+  @IsUUID()
+  /**
+   * The user id of the host, must be uuid of a valid user
+   * @example 'fd5c008f-a521-49a4-9727-ac44c0deaa58'
+   */
+  userId?: string;
+
+  @IsOptional()
+  @IsUUID()
+  /**
+   * The room id of the host, must be uuid of a valid room
+   * @example '123e4567-e89b-12d3-a456-426614174000'
+   */
+  roomId?: string;
+
+  @IsOptional()
+  @IsString()
+  /**
+   * The cpu of the host
+   * @example 'Updated Intel Core i7'
+   */
+  cpu?: string;
+
+  @IsOptional()
+  @IsString()
+  /**
+   * The memory of the host
+   * @example 'Updated 16GB'
+   */
+  memory?: string;
 }

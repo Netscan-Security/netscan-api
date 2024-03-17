@@ -33,3 +33,29 @@ export class CreateVulnerabilityDto {
    */
   description: string;
 }
+
+export class UpdateVulnerabilityDto {
+  @IsOptional()
+  @IsString()
+  /**
+   * The type of the vulnerability
+   * @example 'XSS'
+   */
+  type?: string;
+
+  @IsOptional()
+  @IsString()
+  /**
+   * The severity of the vulnerability
+   * @example 'High'
+   */
+  severity?: string;
+
+  @IsOptional()
+  @IsString()
+  /**
+   * The description of the vulnerability
+   * @example 'Cross-site scripting vulnerability'
+   */
+  description?: string;
+}

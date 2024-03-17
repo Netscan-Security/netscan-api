@@ -1,26 +1,54 @@
-import { Controller, Get, Post, Body, Logger, Param } from '@nestjs/common';
-import { CreateAntiVirusDto } from 'src/interfaces/dtos/antivirus.interface.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Logger,
+  Param,
+  Put,
+  Delete,
+} from '@nestjs/common';
+import {
+  CreateAntiVirusDto,
+  UpdateAntiVirusDto,
+} from 'src/interfaces/dtos/antivirus.interface.dto';
 import { FindOneParams } from 'src/interfaces/dtos/general.interface.dto';
 import { AntiVirusService } from 'src/services/antivirus/antivirus.service';
 
-@Controller('ant-virus')
-export class AntVirusController {
+@Controller('antivirus')
+export class AntivirusController {
   constructor(private readonly antVirusService: AntiVirusService) {}
+  private readonly logger = new Logger(AntivirusController.name);
 
   @Post('register')
-  registerAntVirus(@Body() data: CreateAntiVirusDto) {
-    Logger.log('Registering AntVirus', `${JSON.stringify(data)}`);
+  registerAntivirus(@Body() data: CreateAntiVirusDto) {
+    this.logger.debug('Registering Antivirus', `${JSON.stringify(data)}`);
     return this.antVirusService.create(data);
   }
 
   @Get(':id')
   findOne(@Param() params: FindOneParams): Promise<any> {
-    Logger.log('AntVirus Controller', 'Finding AntVirus: ', params.id);
+    this.logger.debug('Antivirus Controller', 'Finding Antivirus: ', params.id);
     return this.antVirusService.findById(params.id);
   }
 
   @Get()
-  viewAntVirus() {
+  viewAntivirus() {
     return this.antVirusService.findAll();
+  }
+
+  @Put(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateAntiVirusDto: UpdateAntiVirusDto,
+  ) {
+    Logger.log('Antivirus Controller', 'Updating Antivirus: ', id);
+    return this.antVirusService.update(id, updateAntiVirusDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    Logger.log('Antivirus Controller', 'Deleting Antivirus: ', id);
+    return this.antVirusService.remove(id);
   }
 }

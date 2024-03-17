@@ -23,12 +23,22 @@ import { HostService } from './services/host/host.service';
 import { AuthModule } from './auth/auth.module';
 import * as schema from './modules/drizzle/schema';
 import config from 'src/config';
-import { AntVirusController } from './controllers/antivirus/antivirus.controller';
+import { AntivirusController } from './controllers/antivirus/antivirus.controller';
 import { ScanController } from './controllers/scan/scan.controller';
 import { AntiVirusService } from './services/antivirus/antivirus.service';
 import { ScanService } from './services/scan/scan.service';
 import { ProfileController } from './controllers/profile/profile.controller';
 import { ProfileService } from './services/profile/profile.service';
+import { OrganizationController } from './controllers/organization/organization.controller';
+import { OrganizationService } from './services/organization/organization.service';
+import { OrganizationModule } from './modules/organization/organization.module';
+import { CampusController } from './controllers/campus/campus.controller';
+import { CampusService } from './services/campus/campus.service';
+import { BuildingController } from './controllers/building/building.controller';
+import { BuildingService } from './services/building/building.service';
+import { RoomController } from './controllers/room/room.controller';
+import { RoomService } from './services/room/room.service';
+import { HostModule } from './modules/host/host.module';
 
 @Module({
   imports: [
@@ -47,16 +57,22 @@ import { ProfileService } from './services/profile/profile.service';
       },
     }),
     AuthModule,
+    OrganizationModule,
+    HostModule,
   ],
   controllers: [
     AppController,
     TestController,
     LogsController,
-    AntVirusController,
+    AntivirusController,
     ScanController,
     VulnerabilityController,
     HostController,
     ProfileController,
+    OrganizationController,
+    CampusController,
+    BuildingController,
+    RoomController,
   ],
   providers: [
     AppService,
@@ -82,6 +98,10 @@ import { ProfileService } from './services/profile/profile.service';
     HostService,
     AntiVirusService,
     ProfileService,
+    OrganizationService,
+    CampusService,
+    BuildingService,
+    RoomService,
   ],
 })
 export class AppModule {}
