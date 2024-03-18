@@ -1,22 +1,28 @@
-# BUILD FOR LOCAL DEVELOPMENT
-###################
+FROM node:12.13-alpine As development
 
-FROM node:18-alpine
-
-# Create app directory
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-# Install app dependencies using `npm install`
-RUN npm install
-# If you are building your code for production
-# RUN npm ci --only=production
+RUN npm install --only=development
 
-# Bundle app source
 COPY . .
 
-# Build command
 RUN npm run build
 
-ENTRYPOINT ["/bin/sh", "-c", "npm run start:dev"]
+FROM node:12.13-alpine as production
+
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install --only=production
+
+COPY . .
+
+COPY --from=development /usr/src/app/dist ./dist
+
+CMD ["node", "dist/main"]
