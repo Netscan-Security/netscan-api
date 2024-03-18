@@ -169,6 +169,13 @@
       "when": 1710741990922,
       "tag": "0023_real_cassandra_nova",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "5",
+      "when": 1710744328489,
+      "tag": "0024_happy_owl",
+      "breakpoints": true
     }
   ]
 }

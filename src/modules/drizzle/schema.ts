@@ -76,7 +76,7 @@ export const hosts = pgTable('hosts', {
   }).default('created'),
   vpnConfig: jsonb('vpn_config').default(null),
   status: text('status', { enum: ['online', 'offline'] }).default('offline'),
-  ipAddress: text('ip_address').notNull(),
+  ipAddress: text('ip_address').default(null),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
