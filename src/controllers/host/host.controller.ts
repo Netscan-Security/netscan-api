@@ -11,7 +11,7 @@ import {
 import { cleanPassword } from 'src/common/utils/clean';
 import { FindOneParams } from 'src/interfaces/dtos/general.interface.dto';
 import {
-  HostDto,
+  CreateHostDto,
   UpdateHostDto,
 } from 'src/interfaces/dtos/hosts.interface.dto';
 import { UsersService } from 'src/modules/users/users.service';
@@ -26,7 +26,7 @@ export class HostController {
   private readonly logger = new Logger(HostController.name);
 
   @Post('register')
-  async registerHost(@Body() data: HostDto) {
+  async registerHost(@Body() data: CreateHostDto) {
     this.logger.debug(`${JSON.stringify(data)}`);
 
     // check if user has hasHost true
@@ -54,6 +54,24 @@ export class HostController {
   findOne(@Param() params: FindOneParams): Promise<any> {
     this.logger.debug('Finding Host: ', params.id);
     return this.hostService.findById(params.id);
+  }
+
+  @Get('admin/:adminId')
+  getHostByAdminId(@Param('adminId') adminId: string) {
+    this.logger.debug('Getting Host by Admin ID: ', adminId);
+    return this.hostService.findByAdminId(adminId);
+  }
+
+  @Get('user/:userId')
+  getHostByUserId(@Param('userId') userId: string) {
+    this.logger.debug('Getting Host by User ID: ', userId);
+    return this.hostService.findByUserId(userId);
+  }
+
+  @Post(':id/perform-scan')
+  performScan(@Param('id') id: string) {
+    this.logger.debug('Performing Scan for Host ID: ', id);
+    return this.hostService.performScan(id);
   }
 
   @Get()

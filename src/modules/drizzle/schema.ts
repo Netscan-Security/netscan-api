@@ -62,6 +62,7 @@ export const hosts = pgTable('hosts', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: text('name').notNull(),
   userId: uuid('user_id').references(() => users.id),
+  adminId: uuid('admin_id').references(() => users.id),
   roomId: uuid('room_id').references(() => rooms.id),
   cpu: text('cpu').notNull(),
   memory: text('memory').notNull(),
@@ -70,10 +71,18 @@ export const hosts = pgTable('hosts', {
   os: text('os').notNull(),
   rawInfo: jsonb('raw_info').notNull().default('{}'),
   model: text('model').notNull(),
-  ipAddress: text('ip_address').notNull(),
+  onboardingStage: text('status', {
+    enum: ['created', 'configApplied', 'complete'],
+  }).default('created'),
+  vpnConfig: jsonb('vpn_config').default(null),
+  status: text('status', { enum: ['online', 'offline'] }).default('offline'),
+  ipAddress: text('ip_address').default(null),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
+
+// endpoint to create config it needs host id (if possible return the host with the vpnConfig added)
+// endpoint to check if client is public , return if client is online or not (if online mark as configApplied, then mark active) return host details
 
 // Antivirus table
 export const antivirus = pgTable('antivirus', {

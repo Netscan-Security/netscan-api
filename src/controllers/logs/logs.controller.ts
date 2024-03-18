@@ -42,6 +42,8 @@ export class LogsController {
     return this.logsService.create(appLogs);
   }
 
+
+
   @Put(':id')
   update(@Param('id') id: string, @Body() updateLogDto: UpdateLogDto) {
     Logger.log('Logs Controller', 'Updating Log: ', id);
