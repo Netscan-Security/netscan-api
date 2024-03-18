@@ -48,15 +48,15 @@ export class Log {
 }
 
 export class CreateLogDto {
-  @IsUUID()
+  //@IsUUID()
   /**
    * The host id of the log, must be uuid of a valid host
    * @example 'fd5c008f-a521-49a4-9727-ac44c0deaa58'
    */
   hostId: string;
 
-  @IsNotEmpty()
-  @IsObject()
+  //@IsNotEmpty()
+  //@IsObject()
   /**
    * The log data
    * @example @default{ "message": "Application started" }
