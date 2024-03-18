@@ -11,7 +11,7 @@ import {
 import { cleanPassword } from 'src/common/utils/clean';
 import { FindOneParams } from 'src/interfaces/dtos/general.interface.dto';
 import {
-  HostDto,
+  CreateHostDto,
   UpdateHostDto,
 } from 'src/interfaces/dtos/hosts.interface.dto';
 import { UsersService } from 'src/modules/users/users.service';
@@ -26,7 +26,7 @@ export class HostController {
   private readonly logger = new Logger(HostController.name);
 
   @Post('register')
-  async registerHost(@Body() data: HostDto) {
+  async registerHost(@Body() data: CreateHostDto) {
     this.logger.debug(`${JSON.stringify(data)}`);
 
     // check if user has hasHost true
