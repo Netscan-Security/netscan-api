@@ -34,3 +34,12 @@ export class UpdateScanDto {
    */
   scanType?: string;
 }
+
+export interface ScanResult {
+  name: string;
+  product: string;
+  version: string;
+  port: string;
+  protocol: string;
+  status: string;
+}
