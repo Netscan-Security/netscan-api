@@ -56,6 +56,24 @@ export class HostController {
     return this.hostService.findById(params.id);
   }
 
+  @Get('admin/:adminId')
+  getHostByAdminId(@Param('adminId') adminId: string) {
+    this.logger.debug('Getting Host by Admin ID: ', adminId);
+    return this.hostService.findByAdminId(adminId);
+  }
+
+  @Get('user/:userId')
+  getHostByUserId(@Param('userId') userId: string) {
+    this.logger.debug('Getting Host by User ID: ', userId);
+    return this.hostService.findByUserId(userId);
+  }
+
+  @Post(':id/perform-scan')
+  performScan(@Param('id') id: string) {
+    this.logger.debug('Performing Scan for Host ID: ', id);
+    return this.hostService.performScan(id);
+  }
+
   @Get()
   viewHost() {
     return this.hostService.findAll();

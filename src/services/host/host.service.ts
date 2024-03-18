@@ -8,15 +8,42 @@ import {
 } from 'src/interfaces/dtos/hosts.interface.dto';
 import { eq } from 'drizzle-orm';
 
+import { HttpService } from '@nestjs/axios';
+
+import { catchError } from 'rxjs/operators';
+
 @Injectable()
 export class HostService {
   constructor(
     @Inject(DRIZZLE_ORM) private db: PostgresJsDatabase<typeof schema>,
   ) {}
   private readonly logger = new Logger(HostService.name);
-
+  private readonly httpService = new HttpService();
   async findAll() {
     return await this.db.query.hosts.findMany({});
+  }
+
+  async performScan(hostId: string): Promise<any> {
+    const host = await this.findById(hostId);
+    if (!host) {
+      throw new Error('Host not found');
+    }
+
+    return this.httpService
+      .get(`${host.ipAddress}/make-scan`)
+      .pipe(
+        catchError(async (error) => {
+          // If there is any error, update status of host to be offline
+          await this.update(hostId, { status: 'offline' });
+          throw error;
+        }),
+      )
+      .toPromise()
+      .then(async () => {
+        // If success, update status to be online
+        await this.update(hostId, { status: 'online' });
+        return { message: 'Scan performed successfully' };
+      });
   }
 
   async create(data: CreateHostDto) {

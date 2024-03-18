@@ -89,6 +89,7 @@ export class CreateHostDto
 
 export class UpdateHostDto {
   @IsString()
+  @IsOptional()
   /**
    * A name for the host
    * @example 'Updated Host1'
@@ -104,6 +105,7 @@ export class UpdateHostDto {
   userId?: string;
 
   @IsUUID()
+  @IsOptional()
   /**
    * The room id of the host, must be uuid of a valid room
    * @example '123e4567-e89b-12d3-a456-426614174000'
@@ -117,6 +119,9 @@ export class UpdateHostDto {
    * @example 'Updated Intel Core i7'
    */
   cpu?: string;
+
+  @IsOptional()
+  status?: 'online' | 'offline';
 
   @IsOptional()
   @IsString()
