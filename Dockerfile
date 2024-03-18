@@ -13,8 +13,8 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-# Copy the .env and .env.development files
-COPY .env .env.development ./
+# Copy the .env.example file and rename it to .env
+COPY .env.example ./.env
 
 # Creates a "dist" folder with the production build
 RUN npm run build
