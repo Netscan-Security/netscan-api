@@ -12,6 +12,7 @@ import { FindOneParams } from 'src/interfaces/dtos/general.interface.dto';
 import {
   CreateScanDto,
   UpdateScanDto,
+  ScanResult,
 } from 'src/interfaces/dtos/scan.interface.dto';
 import { ScanService } from 'src/services/scan/scan.service';
 
@@ -48,4 +49,13 @@ export class ScanController {
   viewScan() {
     return this.scanService.findAll();
   }
+
+  @Post('receive/results')
+  receiveResults(@Body() scanResult: ScanResult){
+
+    console.log(scanResult)
+
+  }
+
+
 }

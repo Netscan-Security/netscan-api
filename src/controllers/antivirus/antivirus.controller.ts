@@ -51,4 +51,12 @@ export class AntivirusController {
     Logger.log('Antivirus Controller', 'Deleting Antivirus: ', id);
     return this.antVirusService.remove(id);
   }
+
+  @Get('lastscan/:id')
+  getLastVirusScan(@Param('id') id: string): { lastscan: string, status: string } {
+    const currentDateTime = new Date().toISOString();
+    console.log(id)
+    return { lastscan: currentDateTime, status: 'not secure' };
+  }
+
 }
