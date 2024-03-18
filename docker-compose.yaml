@@ -1,77 +1,20 @@
-version: '3'
+# Use a Node.js Alpine-based image for the development stage
+FROM node:18-alpine
 
-services:
-  nest-backend:
-    container_name: netscan-nest-backend
-    image: netscan-api
-    build:
-      dockerfile: Dockerfile
-      context: .
-    ports:
-      - 5000:5000
-    environment:
-      - DB_TYPE=postgres
-      - PG_HOST=postgres
-      - PG_USER=postgres
-      - PG_PASSWORD=postgres
-      - PG_DB=postgres
-      - PG_PORT=5432
-    networks:
-      - backend_network
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-      - /var/run/docker.sock:/var/run/docker.sock
-    depends_on:
-      - postgres
-      # - redis
+# Set the working directory in the container
+WORKDIR /usr/src/app
 
-  # redis:
-  #   container_name: redis-db
-  #   image: redis
-  #   environment:
-  #     - REDIS_PORT=6379
-  #   ports:
-  #     - 6379:6379
-  #   networks:
-  #     - backend_network
-  #   volumes:
-  #     - redis:/data
+# Copy application dependency manifests to the container image
+COPY package*.json ./
 
-  postgres:
-    container_name: postgres-db
-    image: postgres:12
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
-    networks:
-      - backend_network
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./src/dbDumpFile:/dbDumpFile
-      - /var/run/docker.sock:/var/run/docker.sock
+# Install application dependencies using `npm install`
+RUN npm install
 
-  # pgadmin:
-  #   container_name: pgadmin
-  #   image: dpage/pgadmin4
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: admin@pgadmin.com
-  #     PGADMIN_DEFAULT_PASSWORD: admin
-  #   networks:
-  #     - backend_network
-  #   ports:
-  #     - '5050:80'
-  #   depends_on:
-  #     - postgres
+# Copy the rest of the application code to the container
+COPY . .
 
-networks:
-  backend_network:
-    driver: bridge
+# Build the application (if needed)
+RUN npm run build
 
-volumes:
-  postgres_data: {}
-  # redis:
-  #   driver: local
+# Define the command to start your application in development mode
+ENTRYPOINT ["/bin/sh", "-c", "npm run start:dev"]
