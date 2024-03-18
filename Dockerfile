@@ -1,28 +1,26 @@
-FROM node:12.13-alpine As development
+# Base image
+FROM node:18
 
+# Create app directory
 WORKDIR /usr/src/app
 
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
 
-RUN npm install --only=development
+# Install app dependencies
+RUN npm install
 
+# Bundle app source
 COPY . .
 
+# Copy the .env and .env.development files
+COPY .env .env.development ./
+
+# Creates a "dist" folder with the production build
 RUN npm run build
 
-FROM node:12.13-alpine as production
+# Expose the port on which the app will run
+EXPOSE 3079
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-
-RUN npm install --only=production
-
-COPY . .
-
-COPY --from=development /usr/src/app/dist ./dist
-
-CMD ["node", "dist/main"]
+# Start the server using the production build
+CMD ["npm", "run", "start:prod"]
