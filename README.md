@@ -1,6 +1,12 @@
-🚀 Nest.js PSQL Drizzle ORM Configuration 🚀
+<p align="center">
+  <img width="100" src="https://imgur.com/3cw4DQr.png" alt="NetScan Security Logo" />
+  <h2 align="center">NetScan API</h2>
+  <p align="center">Precision Scans, Real-time Defense</p>
+</p>
 
-This repository contains a boilerplate setup for a Nest.js project integrated with PostgreSQL using Drizzle ORM. Drizzle ORM simplifies database operations and enhances the development experience with Nest.js.
+## Description
+
+NetScan API
 
 ## Features
 
@@ -29,6 +35,4 @@ Database
 - To run migration `pnpm run migrate`.
 - To open the Drizzle Studio `pnpm run studio`.
 
-## Contribution Guidelines
-
-Contributions are welcome! If you find any issues or have suggestions for improvements, feel free to open an issue or submit a pull request.
+## END
